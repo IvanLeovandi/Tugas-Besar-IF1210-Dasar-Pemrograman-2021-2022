@@ -9,11 +9,11 @@ def help():
     5. ubah_stok - Untuk mengubah stok game pada toko
     6. list_game_toko - Untuk menampilkan list game pada toko berdasarkan tahun atau harga
     7. buy_game - Untuk membeli game yang tersedia di toko
-    8. list_game - Untuk menampilkan daftar game yang dimiliki pengguna
+    8. my_game - Untuk menampilkan daftar game yang dimiliki pengguna
     9. search_my_game - Untuk mencari game yang dimiliki dari ID dan tahun rilis
     10. search_game_at_store - Untuk mencari game di toko dari ID, nama game, harga, kategori, dan tahun rilis
     11. topup - Untuk menambahkan saldo pada pengguna
-    12. riwayat - Untuk menampilkan riwayat pembelian game
+    12. history - Untuk menampilkan riwayat pembelian game
     13. help - Untuk menampilkan perintah-perintah yang dapat digunakan pada aplikasi
     14. save - Untuk menyimpan perubahan-perubahan yang telah dilakukan
     15. exit - Untuk keluar dari aplikasi
