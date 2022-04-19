@@ -46,7 +46,7 @@ def register_user():
 
     # jika data sudah valid, data akan dimasukkan ke array "user"
     if valid:
-        register = [[id,nama,username,password,saldo,"User"]]
+        register = [id,username,nama,password,"User",saldo]
         user += register
         print("Username",username,"telah berhasil register ke dalam Binomo")
 
