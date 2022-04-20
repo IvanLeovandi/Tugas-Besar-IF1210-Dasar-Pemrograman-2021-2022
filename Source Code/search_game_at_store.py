@@ -96,7 +96,7 @@ for line in hasil:
 
 
 
-###
+#Algoritma
 inventory = f_open("game.csv")
 
 game_id = input("Masukkan ID Game: ")
@@ -114,12 +114,14 @@ if game_id == "":
         if game_price == "":
             if game_category == "":
                 if game_year == "":
+                    #Semua parameter kosong
                     for i in range(f_len(inventory)):
                         print(i+1, end=". ")
                         for j in range (f_len(inventory)):
                             print(inventory[i][j], end = ";")
                         print()
                 else:
+                    #Semua paramater kosong kecuali Tahun Rilis
                     for i in range (f_len(inventory)):
                         if inventory[i][3] == game_year:
                             game_valid[count] = inventory[i]
@@ -134,6 +136,7 @@ if game_id == "":
                     else:
                         print("Tidak ada game pada toko yang memenuhi kriteria.")
             else:
+                #Semua parameter kosong kecuali Kategori
                 if game_year == "":
                     for i in range(f_len(inventory)):
                         if inventory[i][2] == game_category:
@@ -146,6 +149,7 @@ if game_id == "":
                             print(game_valid[i][j], end=";")
                         print()
                 else:
+                    #Parameter Tahun Rilis dan Kategori ada (tidak kosong)
                     for i in range (f_len(inventory)):
                         if inventory[i][2] == game_category:
                             if inventory[i][3] == game_year:
@@ -163,6 +167,7 @@ if game_id == "":
         else:
             if game_category == "":
                 if game_year == "":
+                    #Semua parameter kosong kecuali Harga
                     for i in range(f_len(inventory)):
                         if int(game_price) == inventory[i][4]:
                             game_valid[count] = inventory[i]
@@ -176,6 +181,7 @@ if game_id == "":
                     else:
                         print("Tidak ada game pada toko yang memenuhi kriteria.")
                 else:
+                    #Parameter Harga dan Tahun Rilis ada (tidak kosong)
                     for i in range (f_len(inventory)):
                         if inventory[i][4] == int(game_price):
                             if inventory[i][3] == game_year:
@@ -192,6 +198,7 @@ if game_id == "":
                         print("Tidak ada game pada toko yang memenuhi kriteria.")
             else:
                 if game_year == "":
+                    #Parameter Harga dan Kategori ada (tidak kosong)
                     for i in range(f_len(inventory)):
                         if inventory[i][4] == int(game_price):
                             if inventory[i][2] == game_category:
@@ -205,6 +212,7 @@ if game_id == "":
                         print()
                 else:
                     for i in range (f_len(inventory)):
+                        #Parameter Harga, Kategori dan Tahun Rilis ada (tidak kosong)
                         if inventory[i][4] == int(game_price):
                             if inventory[i][2] == game_category:
                                 if inventory[i][3] == game_year:
@@ -223,6 +231,7 @@ if game_id == "":
         if game_price == "":
             if game_category == "":
                 if game_year == "":
+                    #Semua parameter kosong kecuali Nama
                     for i in range(f_len(inventory)):
                         if game_title == inventory[i][1]:
                             game_valid[count] = inventory[i]
@@ -236,6 +245,7 @@ if game_id == "":
                     else:
                         print("Tidak ada game pada toko yang memenuhi kriteria.")
                 else:
+                    #Parameter Nama dan Tahun Rilis ada (tidak kosong)
                     for i in range (f_len(inventory)):
                         if game_title == inventory[i][1]:
                             if inventory[i][3] == game_year:
@@ -252,6 +262,7 @@ if game_id == "":
                         print("Tidak ada game pada toko yang memenuhi kriteria.")
             else:
                 if game_year == "":
+                    #Parameter Nama dan Kategori ada (tidak kosong)
                     for i in range(f_len(inventory)):
                         if game_title == inventory[i][1]:
                             if inventory[i][2] == game_category:
@@ -264,6 +275,7 @@ if game_id == "":
                             print(game_valid[i][j], end=";")
                         print()
                 else:
+                    #Parameter Nama, Kategori dan Tahun Rilis ada (tidak kosong)
                     for i in range (f_len(inventory)):
                         if game_title == inventory[i][1]:
                             if inventory[i][2] == game_category:
@@ -282,6 +294,7 @@ if game_id == "":
         else:
             if game_category == "":
                 if game_year == "":
+                    #Parameter Nama dan Harga ada (tidak kosong)
                     for i in range(f_len(inventory)):
                         if game_title == inventory[i][1]:
                             if int(game_price) == inventory[i][4]:
@@ -297,6 +310,7 @@ if game_id == "":
                         print("Tidak ada game pada toko yang memenuhi kriteria.")
                 else:
                     for i in range (f_len(inventory)):
+                        #Parameter Nama, Harga dan Tahun ada (tidak kosong)
                         if game_title == inventory[i][1]:
                             if inventory[i][4] == int(game_price):
                               if inventory[i][3] == game_year:
@@ -314,6 +328,7 @@ if game_id == "":
             else:
                 if game_year == "":
                     for i in range(f_len(inventory)):
+                        #Parameter Nama, Harga dan Kategori ada (tidak kosong)
                         if game_title == inventory[i][1]:
                             if inventory[i][4] == int(game_price):
                                 if inventory[i][2] == game_category:
@@ -327,6 +342,7 @@ if game_id == "":
                         print()
                 else:
                     for i in range (f_len(inventory)):
+                        #Semua Parameter ada (tidak kosong) kecuali ID
                         if game_title == inventory[i][1]:
                             if inventory[i][4] == int(game_price):
                                 if inventory[i][2] == game_category:
@@ -348,6 +364,7 @@ else:
             if game_category == "":
                 if game_year == "":
                     for i in range(f_len(inventory)):
+                        #Semua parameter kosong kecuali ID
                         if game_id == inventory[i][0]:
                             game_valid[count] = inventory[i]
                             count += 1
@@ -361,6 +378,7 @@ else:
                         print("Tidak ada game pada toko yang memenuhi kriteria.")
                 else:
                     for i in range (f_len(inventory)):
+                        #Parameter ID dan Tahun Rilis ada (tidak kosong)
                         if game_id == inventory[i][0]:
                             if inventory[i][3] == game_year:
                                 game_valid[count] = inventory[i]
@@ -377,6 +395,7 @@ else:
             else:
                 if game_year == "":
                     for i in range(f_len(inventory)):
+                        #Parameter ID dan Kategori ada (tidak kosong)
                         if game_id == inventory[i][0]:
                             if inventory[i][2] == game_category:
                                 game_valid[count] = inventory[i]
@@ -389,6 +408,7 @@ else:
                         print()
                 else:
                     for i in range (f_len(inventory)):
+                        #Parameter ID, Kategori dan Tahun Rilis ada (tidak kosong)
                         if game_id == inventory[i][0]:
                             if inventory[i][2] == game_category:
                                 if inventory[i][3] == game_year:
@@ -407,6 +427,7 @@ else:
             if game_category == "":
                 if game_year == "":
                     for i in range(f_len(inventory)):
+                        #Parameter ID dan Harga tidak kosong
                         if game_id == inventory[i][0]:
                             if int(game_price) == inventory[i][4]:
                                 game_valid[count] = inventory[i]
@@ -421,6 +442,7 @@ else:
                         print("Tidak ada game pada toko yang memenuhi kriteria.")
                 else:
                     for i in range (f_len(inventory)):
+                        #Parameter tidak kosong kecuali Nama dan Kategori
                         if game_id == inventory[i][0]:
                             if inventory[i][4] == int(game_price):
                                 if inventory[i][3] == game_year:
@@ -438,6 +460,7 @@ else:
             else:
                 if game_year == "":
                     for i in range(f_len(inventory)):
+                        #Parameter tidak kosong kecuali Nama dan Tahun Rilis
                         if game_id == inventory[i][0]:
                             if inventory[i][4] == int(game_price):
                                 if inventory[i][2] == game_category:
@@ -451,6 +474,7 @@ else:
                         print()
                 else:
                     for i in range (f_len(inventory)):
+                        #Parameter tidak kosong kecuali Nama
                         if game_id == inventory[i][0]:
                             if inventory[i][4] == int(game_price):
                                 if inventory[i][2] == game_category:
@@ -470,6 +494,7 @@ else:
         if game_price == "":
             if game_category == "":
                 if game_year == "":
+                    #Parameter ID dan Tahun tidak kosong
                     for i in range(f_len(inventory)):
                         if game_id == inventory[i][0]:
                             if inventory[i][3] == game_year:
@@ -485,6 +510,7 @@ else:
                         print("Tidak ada game pada toko yang memenuhi kriteria.")
                 else:
                     for i in range (f_len(inventory)):
+                        #Parameter ID, Nama dan Tahun Rilis tidak kosong
                         if game_id == inventory[i][0]:
                             if game_title == inventory[i][1]:
                                 if inventory[i][3] == game_year:
@@ -501,6 +527,7 @@ else:
                         print("Tidak ada game pada toko yang memenuhi kriteria.")
             else:
                 if game_year == "":
+                    #Parameter ID, Nama dan Kategori tidak kosong
                     for i in range(f_len(inventory)):
                         if game_id == inventory[i][0]:
                             if game_title == inventory[i][1]:
@@ -514,6 +541,7 @@ else:
                             print(game_valid[i][j], end=";")
                         print()
                 else:
+                    #Parameter Harga kosong
                     for i in range (f_len(inventory)):
                         if game_id == inventory[i][0]:
                             if game_title == inventory[i][1]:
@@ -533,6 +561,7 @@ else:
         else:
             if game_category == "":
                 if game_year == "":
+                    #Parameter Kategori dan Tahun Rilis kosong
                     for i in range(f_len(inventory)):
                         if game_id == inventory[i][0]:
                             if game_title == inventory[i][1]:
@@ -549,6 +578,7 @@ else:
                         print("Tidak ada game pada toko yang memenuhi kriteria.")
                 else:
                     for i in range (f_len(inventory)):
+                        #Parameter Kategori Kosong
                         if game_id == inventory[i][0]:
                             if game_title == inventory[i][1]:
                                 if inventory[i][4] == int(game_price):
@@ -566,6 +596,7 @@ else:
                         print("Tidak ada game pada toko yang memenuhi kriteria.")
             else:
                 if game_year == "":
+                    #Parameter Tahun Rilis kosong
                     for i in range(f_len(inventory)):
                         if game_id == inventory[i][0]:
                             if game_title == inventory[i][1]:
@@ -581,6 +612,7 @@ else:
                         print()
                 else:
                     for i in range (f_len(inventory)):
+                        #Semua parameter ada (kosong)
                         if game_id == inventory[i][0]:
                             if game_title == inventory[i][1]:
                                 if inventory[i][4] == int(game_price):
