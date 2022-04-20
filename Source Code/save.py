@@ -1,6 +1,7 @@
 def save():
     import os
     
+    current_path = os.getcwd()
     path = input('Masukkan nama folder penyimpanan: ')
     if not os.path.exists(path):
         os.mkdir(path)
@@ -46,6 +47,8 @@ def save():
         k.write(str(user[i][2]))
         k.write('\n')
     k.close()
+
+    os.chdir(current_path)
 
 
 
