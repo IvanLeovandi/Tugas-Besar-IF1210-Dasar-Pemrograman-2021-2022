@@ -119,7 +119,7 @@ def list_game_toko():
         return hasil
 
 
-    list_game = f_open("game.csv")
+    list_game = f_open("lalala.csv")
     skema = input("Skema sorting : ")
 
     #mengurutkan berdasarkan Harga (kecil ke besar)
@@ -133,7 +133,7 @@ def list_game_toko():
                     list_game[i] = temp
         for i in range(f_len(list_game)):
             print(i+1, end=". ")
-            for j in range (f_len(list_game)):
+            for j in range (6):
                 print(list_game[i][j], end = " | ")
             print()
 
@@ -148,7 +148,7 @@ def list_game_toko():
                     list_game[i] = temp
         for i in range(f_len(list_game)):
             print(i+1, end=". ")
-            for j in range (f_len(list_game)):
+            for j in range (6):
                 print(list_game[i][j], end = " | ")
             print()
 
@@ -163,7 +163,7 @@ def list_game_toko():
                     list_game[i] = temp
         for i in range(f_len(list_game)):
             print(i+1, end=". ")
-            for j in range (f_len(list_game)):
+            for j in range (6):
                 print(list_game[i][j], end = " | ")
             print()
 
@@ -178,13 +178,13 @@ def list_game_toko():
                     list_game[i] = temp
         for i in range(f_len(list_game)):
             print(i+1, end=". ")
-            for j in range (f_len(list_game)):
+            for j in range (6):
                 print(list_game[i][j], end = " | ")
             print()
     elif skema == "" or skema == " ":
         for i in range(f_len(list_game)):
             print(i+1, end=". ")
-            for j in range (f_len(list_game)):
+            for j in range (6):
                 print(list_game[i][j], end = " | ")
             print()
         
