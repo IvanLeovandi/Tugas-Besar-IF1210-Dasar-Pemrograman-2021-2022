@@ -134,7 +134,7 @@ def list_game_toko():
         for i in range(f_len(list_game)):
             print(i+1, end=". ")
             for j in range (f_len(list_game)):
-                print(list_game[i][j], end = ";")
+                print(list_game[i][j], end = " | ")
             print()
 
     #mengurutkan berdasarkan Tahun Rilis (kecil ke besar)
@@ -149,7 +149,7 @@ def list_game_toko():
         for i in range(f_len(list_game)):
             print(i+1, end=". ")
             for j in range (f_len(list_game)):
-                print(list_game[i][j], end = ";")
+                print(list_game[i][j], end = " | ")
             print()
 
     #mengurutkan berdasarkan Tahun Rilis (besar ke kecil)        
@@ -164,7 +164,7 @@ def list_game_toko():
         for i in range(f_len(list_game)):
             print(i+1, end=". ")
             for j in range (f_len(list_game)):
-                print(list_game[i][j], end = ";")
+                print(list_game[i][j], end = " | ")
             print()
 
     #mengurutkan berdasarkan Harga (besar ke kecil)        
@@ -179,13 +179,13 @@ def list_game_toko():
         for i in range(f_len(list_game)):
             print(i+1, end=". ")
             for j in range (f_len(list_game)):
-                print(list_game[i][j], end = ";")
+                print(list_game[i][j], end = " | ")
             print()
     elif skema == "" or skema == " ":
         for i in range(f_len(list_game)):
             print(i+1, end=". ")
             for j in range (f_len(list_game)):
-                print(list_game[i][j], end = ";")
+                print(list_game[i][j], end = " | ")
             print()
         
     #input skema tidak sesuai
