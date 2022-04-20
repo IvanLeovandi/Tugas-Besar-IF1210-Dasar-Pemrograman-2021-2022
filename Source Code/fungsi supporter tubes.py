@@ -84,5 +84,14 @@ for line in hasil:
     to_write += f_join(line, ";") + "\n"
 '''
 
-
-
+# search
+def f_search(array, search):
+    found = False
+    for i in range(f_len(array)):
+        if array[i] == search:
+            found = True
+    
+    if found == True:
+        return True
+    else:
+        return False
