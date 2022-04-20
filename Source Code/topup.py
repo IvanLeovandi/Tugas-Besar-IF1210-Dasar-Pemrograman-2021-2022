@@ -1,5 +1,5 @@
 # Isi array diumpamakan
-user = [["U1","Hosea","Hosea_N","1234",5000,"User"],["U2","Ivan","Ivan_L","1122",0,"User"]]
+user = [["U1","Hosea_N","Hosea","1234","User",5000],["U2","Ivan_L","Ivan","1122","User",0]]
 
 def topup():
     # Menambahkan data saldo pada user tertentu
@@ -29,10 +29,10 @@ def topup():
         found = False
         for i in range(len(user)):
             # Jika username ditemukan, akan dilakukan penambahan saldo
-            if user[i][2] == username:
+            if user[i][1] == username:
                 found = True
-                user[i][4] += saldo_tambahan
-                print("Top up berhasil. Saldo",username,"bertambah menjadi",user[i][4])
+                user[i][5] += saldo_tambahan
+                print("Top up berhasil. Saldo",username,"bertambah menjadi",user[i][5])
                 break
         # Jika username tidak ditemukan, akan menyampaikan pesan error
         if found == False:
