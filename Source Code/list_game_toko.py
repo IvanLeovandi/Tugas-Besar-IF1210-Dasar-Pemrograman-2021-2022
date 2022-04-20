@@ -84,99 +84,111 @@ for line in hasil:
     to_write += f_join(line, ";") + "\n"
 '''
 
+#Kamus
+#list_game : array of (array of string)
+#skema : string
+#temp : string
 
 #algoritma
-def max (array, skema, x):
-    if skema == "tahun-":
-        hasil = list_game[x][3]
-        for i in range (x, f_len(array)):
-            if int(array[i][3]) > int(hasil):
-                hasil = array[i][3]
-    elif skema == "harga-":
-        hasil = list_game[x][4]
-        for i in range (x, f_len(array)):
-            if int(array[i][4]) > int(hasil):
-                hasil = array[i][4]
-    return hasil
+def list_game_toko():
+    def max (array, skema, x):
+        if skema == "tahun-":
+            hasil = list_game[x][3]
+            for i in range (x, f_len(array)):
+                if int(array[i][3]) > int(hasil):
+                    hasil = array[i][3]
+        elif skema == "harga-":
+            hasil = list_game[x][4]
+            for i in range (x, f_len(array)):
+                if int(array[i][4]) > int(hasil):
+                    hasil = array[i][4]
+        return hasil
     
     
-def min (array, skema, x):
-    if skema == "tahun+":
-        hasil = list_game[x][3]
-        for i in range (x, f_len(array)):
-            if int(array[i][3]) < int(hasil):
-                hasil = array[i][3]
+    def min (array, skema, x):
+        if skema == "tahun+":
+            hasil = list_game[x][3]
+            for i in range (x, f_len(array)):
+                if int(array[i][3]) < int(hasil):
+                    hasil = array[i][3]
+        elif skema == "harga+":
+            hasil = list_game[x][4]
+            for i in range (x, f_len(array)):
+                if int(array[i][4]) < int(hasil):
+                    hasil = array[i][4]
+        return hasil
+
+
+    list_game = f_open("game.csv")
+    skema = input("Skema sorting : ")
+
+    #mengurutkan berdasarkan Harga (kecil ke besar)
+    if skema == "harga-":
+        temp = 0
+        for i in range (f_len(list_game)):
+            for j in range (i, f_len(list_game)):
+                if list_game[j][4] == max(list_game, skema, i):
+                    temp = list_game[j]
+                    list_game[j] = list_game[i]
+                    list_game[i] = temp
+        for i in range(f_len(list_game)):
+            print(i+1, end=". ")
+            for j in range (f_len(list_game)):
+                print(list_game[i][j], end = ";")
+            print()
+
+    #mengurutkan berdasarkan Tahun Rilis (kecil ke besar)
+    elif skema == "tahun-":
+        temp = 0
+        for i in range (f_len(list_game)):
+            for j in range (i, f_len(list_game)):
+                if list_game[j][3] == max(list_game, skema, i):
+                    temp = list_game[j]
+                    list_game[j] = list_game[i]
+                    list_game[i] = temp
+        for i in range(f_len(list_game)):
+            print(i+1, end=". ")
+            for j in range (f_len(list_game)):
+                print(list_game[i][j], end = ";")
+            print()
+
+    #mengurutkan berdasarkan Tahun Rilis (besar ke kecil)        
+    elif skema == "tahun+":
+        temp = 0
+        for i in range (f_len(list_game)):
+            for j in range (i, f_len(list_game)):
+                if list_game[j][3] == min(list_game, skema, i):
+                    temp = list_game[j]
+                    list_game[j] = list_game[i]
+                    list_game[i] = temp
+        for i in range(f_len(list_game)):
+            print(i+1, end=". ")
+            for j in range (f_len(list_game)):
+                print(list_game[i][j], end = ";")
+            print()
+
+    #mengurutkan berdasarkan Harga (besar ke kecil)        
     elif skema == "harga+":
-        hasil = list_game[x][4]
-        for i in range (x, f_len(array)):
-            if int(array[i][4]) < int(hasil):
-                hasil = array[i][4]
-    return hasil
-
-
-list_game = f_open("game.csv")
-skema = input("Skema sorting : ")
-if skema == "harga-":
-    temp = 0
-    for i in range (f_len(list_game)):
-        for j in range (i, f_len(list_game)):
-            if list_game[j][4] == max(list_game, skema, i):
-                temp = list_game[j]
-                list_game[j] = list_game[i]
-                list_game[i] = temp
-    for i in range(f_len(list_game)):
-        print(i+1, end=". ")
-        for j in range (f_len(list_game)):
-            print(list_game[i][j], end = ";")
-        print()
-elif skema == "tahun-":
-    temp = 0
-    itemp = [0 for i in range (f_len(list_game))]
-    for i in range (f_len(list_game)):
-        for j in range (i, f_len(list_game)):
-            if list_game[j][3] == max(list_game, skema, i):
-                temp = list_game[j]
-                list_game[j] = list_game[i]
-                list_game[i] = temp
-    for i in range(f_len(list_game)):
-        print(i+1, end=". ")
-        for j in range (f_len(list_game)):
-            print(list_game[i][j], end = ";")
-        print()
-elif skema == "tahun+":
-    temp = 0
-    itemp = [0 for i in range (f_len(list_game))]
-    for i in range (f_len(list_game)):
-        for j in range (i, f_len(list_game)):
-            if list_game[j][3] == min(list_game, skema, i):
-                temp = list_game[j]
-                list_game[j] = list_game[i]
-                list_game[i] = temp
-    for i in range(f_len(list_game)):
-        print(i+1, end=". ")
-        for j in range (f_len(list_game)):
-            print(list_game[i][j], end = ";")
-        print()
-elif skema == "harga+":
-    temp = 0
-    itemp = [0 for i in range (f_len(list_game))]
-    for i in range (f_len(list_game)):
-        for j in range (i, f_len(list_game)):
-            if list_game[j][4] == min(list_game, skema, i):
-                temp = list_game[j]
-                list_game[j] = list_game[i]
-                list_game[i] = temp
-    for i in range(f_len(list_game)):
-        print(i+1, end=". ")
-        for j in range (f_len(list_game)):
-            print(list_game[i][j], end = ";")
-        print()
-elif skema == "" or skema == " ":
-    for i in range(f_len(list_game)):
-        print(i+1, end=". ")
-        for j in range (f_len(list_game)):
-            print(list_game[i][j], end = ";")
-        print()
-else:
-    print("Skema sorting tidak valid!")
+        temp = 0
+        for i in range (f_len(list_game)):
+            for j in range (i, f_len(list_game)):
+                if list_game[j][4] == min(list_game, skema, i):
+                    temp = list_game[j]
+                    list_game[j] = list_game[i]
+                    list_game[i] = temp
+        for i in range(f_len(list_game)):
+            print(i+1, end=". ")
+            for j in range (f_len(list_game)):
+                print(list_game[i][j], end = ";")
+            print()
+    elif skema == "" or skema == " ":
+        for i in range(f_len(list_game)):
+            print(i+1, end=". ")
+            for j in range (f_len(list_game)):
+                print(list_game[i][j], end = ";")
+            print()
+        
+    #input skema tidak sesuai
+    else:
+        print("Skema sorting tidak valid!")
 
