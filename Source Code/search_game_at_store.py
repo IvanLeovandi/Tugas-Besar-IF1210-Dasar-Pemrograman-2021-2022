@@ -117,7 +117,7 @@ def search_game_at_store():
                         for i in range(f_len(inventory)):
                             print(i+1, end=". ")
                             for j in range (f_len(inventory)):
-                                print(inventory[i][j], end = ";")
+                                print(inventory[i][j], end = " | ")
                             print()
                     else:
                         #Semua paramater kosong kecuali Tahun Rilis
@@ -130,7 +130,7 @@ def search_game_at_store():
                             for i in range(count):
                                 print(i+1, end=". ")
                                 for j in range (5):
-                                    print(game_valid[i][j], end=";")
+                                    print(game_valid[i][j], end=" | ")
                                 print()
                         else:
                             print("Tidak ada game pada toko yang memenuhi kriteria.")
@@ -145,7 +145,7 @@ def search_game_at_store():
                         for i in range(count):
                             print(i+1, end=". ")
                             for j in range (5):
-                                print(game_valid[i][j], end=";")
+                                print(game_valid[i][j], end=" | ")
                             print()
                     else:
                         #Parameter Tahun Rilis dan Kategori ada (tidak kosong)
@@ -159,7 +159,7 @@ def search_game_at_store():
                             for i in range(count):
                                 print(i+1, end=". ")
                                 for j in range (5):
-                                    print(game_valid[i][j], end=";")
+                                    print(game_valid[i][j], end=" | ")
                                 print()
                         else:
                             print("Tidak ada game pada toko yang memenuhi kriteria.")
@@ -176,7 +176,7 @@ def search_game_at_store():
                             for i in range(count):
                                 print(i+1, end=". ")
                                 for j in range (5):
-                                    print(game_valid[i][j], end=";")
+                                    print(game_valid[i][j], end=" | ")
                         else:
                             print("Tidak ada game pada toko yang memenuhi kriteria.")
                     else:
@@ -191,7 +191,7 @@ def search_game_at_store():
                             for i in range(count):
                                 print(i+1, end=". ")
                                 for j in range (5):
-                                    print(game_valid[i][j], end=";")
+                                    print(game_valid[i][j], end=" | ")
                                 print()
                         else:
                             print("Tidak ada game pada toko yang memenuhi kriteria.")
@@ -207,7 +207,7 @@ def search_game_at_store():
                         for i in range(count):
                             print(i+1, end=". ")
                             for j in range (5):
-                                print(game_valid[i][j], end=";")
+                                print(game_valid[i][j], end=" | ")
                             print()
                     else:
                         for i in range (f_len(inventory)):
@@ -222,7 +222,7 @@ def search_game_at_store():
                             for i in range(count):
                                 print(i+1, end=". ")
                                 for j in range (5):
-                                    print(game_valid[i][j], end=";")
+                                    print(game_valid[i][j], end=" | ")
                                 print()
                         else:
                             print("Tidak ada game pada toko yang memenuhi kriteria.")
@@ -240,7 +240,7 @@ def search_game_at_store():
                             for i in range(count):
                                 print(i+1, end=". ")
                                 for j in range (5):
-                                    print(game_valid[i][j], end=";")
+                                    print(game_valid[i][j], end=" | ")
                         else:
                             print("Tidak ada game pada toko yang memenuhi kriteria.")
                     else:
@@ -255,7 +255,7 @@ def search_game_at_store():
                             for i in range(count):
                                 print(i+1, end=". ")
                                 for j in range (5):
-                                    print(game_valid[i][j], end=";")
+                                    print(game_valid[i][j], end=" | ")
                                 print()
                         else:
                             print("Tidak ada game pada toko yang memenuhi kriteria.")
@@ -271,7 +271,7 @@ def search_game_at_store():
                         for i in range(count):
                             print(i+1, end=". ")
                             for j in range (5):
-                                print(game_valid[i][j], end=";")
+                                print(game_valid[i][j], end=" | ")
                             print()
                     else:
                         #Parameter Nama, Kategori dan Tahun Rilis ada (tidak kosong)
@@ -286,7 +286,7 @@ def search_game_at_store():
                             for i in range(count):
                                 print(i+1, end=". ")
                                 for j in range (5):
-                                    print(game_valid[i][j], end=";")
+                                    print(game_valid[i][j], end=" | ")
                                 print()
                         else:
                             print("Tidak ada game pada toko yang memenuhi kriteria.")
@@ -304,7 +304,7 @@ def search_game_at_store():
                             for i in range(count):
                                 print(i+1, end=". ")
                                 for j in range (5):
-                                    print(game_valid[i][j], end=";")
+                                    print(game_valid[i][j], end=" | ")
                         else:
                             print("Tidak ada game pada toko yang memenuhi kriteria.")
                     else:
@@ -320,7 +320,7 @@ def search_game_at_store():
                             for i in range(count):
                                 print(i+1, end=". ")
                                 for j in range (5):
-                                    print(game_valid[i][j], end=";")
+                                    print(game_valid[i][j], end=" | ")
                                 print()
                         else:
                             print("Tidak ada game pada toko yang memenuhi kriteria.")
@@ -337,7 +337,7 @@ def search_game_at_store():
                         for i in range(count):
                             print(i+1, end=". ")
                             for j in range (5):
-                                print(game_valid[i][j], end=";")
+                                print(game_valid[i][j], end=" | ")
                             print()
                     else:
                         for i in range (f_len(inventory)):
@@ -353,7 +353,7 @@ def search_game_at_store():
                             for i in range(count):
                                 print(i+1, end=". ")
                                 for j in range (5):
-                                    print(game_valid[i][j], end=";")
+                                    print(game_valid[i][j], end=" | ")
                                 print()
                         else:
                             print("Tidak ada game pada toko yang memenuhi kriteria.")
@@ -372,7 +372,7 @@ def search_game_at_store():
                             for i in range(count):
                                 print(i+1, end=". ")
                                 for j in range (5):
-                                    print(game_valid[i][j], end=";")
+                                    print(game_valid[i][j], end=" | ")
                         else:
                             print("Tidak ada game pada toko yang memenuhi kriteria.")
                     else:
@@ -387,7 +387,7 @@ def search_game_at_store():
                             for i in range(count):
                                 print(i+1, end=". ")
                                 for j in range (5):
-                                    print(game_valid[i][j], end=";")
+                                    print(game_valid[i][j], end=" | ")
                                 print()
                         else:
                             print("Tidak ada game pada toko yang memenuhi kriteria.")
@@ -403,7 +403,7 @@ def search_game_at_store():
                         for i in range(count):
                             print(i+1, end=". ")
                             for j in range (5):
-                                print(game_valid[i][j], end=";")
+                                print(game_valid[i][j], end=" | ")
                             print()
                     else:
                         for i in range (f_len(inventory)):
@@ -418,7 +418,7 @@ def search_game_at_store():
                             for i in range(count):
                                 print(i+1, end=". ")
                                 for j in range (5):
-                                    print(game_valid[i][j], end=";")
+                                    print(game_valid[i][j], end=" | ")
                                 print()
                         else:
                             print("Tidak ada game pada toko yang memenuhi kriteria.")
@@ -436,7 +436,7 @@ def search_game_at_store():
                             for i in range(count):
                                 print(i+1, end=". ")
                                 for j in range (5):
-                                    print(game_valid[i][j], end=";")
+                                    print(game_valid[i][j], end=" | ")
                         else:
                             print("Tidak ada game pada toko yang memenuhi kriteria.")
                     else:
@@ -452,7 +452,7 @@ def search_game_at_store():
                             for i in range(count):
                                 print(i+1, end=". ")
                                 for j in range (5):
-                                    print(game_valid[i][j], end=";")
+                                    print(game_valid[i][j], end=" | ")
                                 print()
                         else:
                             print("Tidak ada game pada toko yang memenuhi kriteria.")
@@ -469,7 +469,7 @@ def search_game_at_store():
                         for i in range(count):
                             print(i+1, end=". ")
                             for j in range (5):
-                                print(game_valid[i][j], end=";")
+                                print(game_valid[i][j], end=" | ")
                             print()
                     else:
                         for i in range (f_len(inventory)):
@@ -485,7 +485,7 @@ def search_game_at_store():
                             for i in range(count):
                                 print(i+1, end=". ")
                                 for j in range (5):
-                                    print(game_valid[i][j], end=";")
+                                    print(game_valid[i][j], end=" | ")
                                 print()
                         else:
                             print("Tidak ada game pada toko yang memenuhi kriteria.")
@@ -504,7 +504,7 @@ def search_game_at_store():
                             for i in range(count):
                                 print(i+1, end=". ")
                                 for j in range (5):
-                                    print(game_valid[i][j], end=";")
+                                    print(game_valid[i][j], end=" | ")
                         else:
                             print("Tidak ada game pada toko yang memenuhi kriteria.")
                     else:
@@ -520,7 +520,7 @@ def search_game_at_store():
                             for i in range(count):
                                 print(i+1, end=". ")
                                 for j in range (5):
-                                    print(game_valid[i][j], end=";")
+                                    print(game_valid[i][j], end=" | ")
                                 print()
                         else:
                             print("Tidak ada game pada toko yang memenuhi kriteria.")
@@ -537,7 +537,7 @@ def search_game_at_store():
                         for i in range(count):
                             print(i+1, end=". ")
                             for j in range (5):
-                                print(game_valid[i][j], end=";")
+                                print(game_valid[i][j], end=" | ")
                             print()
                     else:
                         #Parameter Harga kosong
@@ -553,7 +553,7 @@ def search_game_at_store():
                             for i in range(count):
                                 print(i+1, end=". ")
                                 for j in range (5):
-                                    print(game_valid[i][j], end=";")
+                                    print(game_valid[i][j], end=" | ")
                                 print()
                         else:
                             print("Tidak ada game pada toko yang memenuhi kriteria.")
@@ -572,7 +572,7 @@ def search_game_at_store():
                             for i in range(count):
                                 print(i+1, end=". ")
                                 for j in range (5):
-                                    print(game_valid[i][j], end=";")
+                                    print(game_valid[i][j], end=" | ")
                         else:
                             print("Tidak ada game pada toko yang memenuhi kriteria.")
                     else:
@@ -589,7 +589,7 @@ def search_game_at_store():
                             for i in range(count):
                                 print(i+1, end=". ")
                                 for j in range (5):
-                                    print(game_valid[i][j], end=";")
+                                    print(game_valid[i][j], end=" | ")
                                 print()
                         else:
                             print("Tidak ada game pada toko yang memenuhi kriteria.")
@@ -608,7 +608,7 @@ def search_game_at_store():
                             for i in range(count):
                                 print(i+1, end=". ")
                                 for j in range (5):
-                                    print(game_valid[i][j], end=";")
+                                    print(game_valid[i][j], end=" | ")
                                 print()
                         else:
                             print("Tidak ada game pada toko yang memenuhi kriteria.")
@@ -628,7 +628,7 @@ def search_game_at_store():
                             for i in range(count):
                                 print(i+1, end=". ")
                                 for j in range (5):
-                                    print(game_valid[i][j], end=";")
+                                    print(game_valid[i][j], end=" | ")
                                 print()
                         else:
                             print("Tidak ada game pada toko yang memenuhi kriteria.")
