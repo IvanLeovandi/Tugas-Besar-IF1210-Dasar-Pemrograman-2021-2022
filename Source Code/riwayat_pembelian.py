@@ -8,7 +8,7 @@ def riwayat_pembelian(riwayatgame,user,username):
     j=1
     condition=False
     for i in (riwayatgame):
-        if riwayatgame[i][4]==user[index][0]:
+        if riwayatgame[i][3]==user[index][0]:
             condition=True
             print (f'{j}. {riwayatgame[i][0]} | {riwayatgame[i][1]} | {riwayatgame[i][2]} | {riwayatgame[i][4]}')
             j+=1
