@@ -1,7 +1,5 @@
-# Isi array kosong
-user = []
-
-def register_user():
+# F02 - Register
+def register_user(user):
     # Menambahkan data user baru ke dalam database
     # I.S. matriks data user terdefinisi
     # F.S. matriks data user ditambahkan data user baru
@@ -12,9 +10,6 @@ def register_user():
     # i: integer
     # register, user : array of array of string
     
-    # Variable global
-    global user 
-    
     # ALGORITMA
     # input nama, username, password
     nama = input("Masukan nama: ")
@@ -23,12 +18,12 @@ def register_user():
     
     # validasi dari input username
     valid = True
-    for i in range(len(username)):
+    for i in range(support.f_len(username)):
         # validasi karakter yang digunakan dalam username
         if username[i] in ('!@#$%^&*()+={[}]]|\:;<,>.?/'):
             valid = False
             return print("Username",username,"tidak valid, silahkan gunakan username lain.")
-    for i in range(len(user)):
+    for i in range(support.f_len(user)):
         # validasi keunikan username
         if user[i][1] == username:
             valid = False
@@ -36,7 +31,7 @@ def register_user():
 
     # Membuat ID user
     count = 0
-    for i in range(len(user)):
+    for i in range(support.f_len(user)):
         if user[i][0][0] == 'U':
             count += 1
     
@@ -46,16 +41,7 @@ def register_user():
 
     # jika data sudah valid, data akan dimasukkan ke array "user"
     if valid:
-        register = [[id,username,nama,password,"User",saldo]]
-        user += register
+        register = [id,username,nama,password,"User",saldo]
+        user = support.f_append(user,register)
         print("Username",username,"telah berhasil register ke dalam Binomo")
-
-program = True
-while program:
-    perintah = input(">>> ")
-    if perintah == "register":
-        register_user()
-    elif perintah == "hasil":
-        print(user)
-    else:
-        program = False
+    return user
