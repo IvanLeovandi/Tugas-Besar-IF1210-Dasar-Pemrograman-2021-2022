@@ -1,4 +1,4 @@
-def save():
+def save(user,game,riwayat,kepemilikan):
     import os
     
     current_path = os.getcwd()
@@ -10,7 +10,7 @@ def save():
 
     g = open('game.csv', 'w')
     g.write("id;nama;kategori;tahun_rilis;harga;stok\n")
-    for i in range (f_len(game)):
+    for i in range (support.f_len(game)):
         for j in range (5):
             g.write(str(game[i][j]))
             g.write(";")
@@ -19,8 +19,8 @@ def save():
     g.close()
 
     u = open('user.csv', 'w')
-    u.write("game_id;nama;harga;user_id;tahun_beli\n")
-    for i in range (f_len(user)):
+    u.write("id;username;nama;password;role;saldo\n")
+    for i in range (support.f_len(user)):
         for j in range (5):
             u.write(str(user[i][j]))
             u.write(';')
@@ -30,7 +30,7 @@ def save():
     
     r = open('riwayat.csv', 'w')
     r.write("id;username;nama;password;role;saldo\n")
-    for i in range (f_len(riwayat)):
+    for i in range (support.f_len(riwayat)):
         for j in range (4):
             r.write(str(user[i][j]))
             r.write(';')
@@ -40,16 +40,12 @@ def save():
 
     k = open('kepemilikan.csv', 'w')
     k.write("game_id;user_id\n")
-    for i in range (f_len(kepemilikan)):
-        for j in range (2):
-            k.write(str(user[i][j]))
+    for i in range (support.f_len(kepemilikan)):
+        for j in range (1):
+            k.write(str(kepemilikan[i][j]))
             k.write(';')
-        k.write(str(user[i][2]))
+        k.write(str(kepemilikan[i][1]))
         k.write('\n')
     k.close()
 
     os.chdir(current_path)
-
-
-
-
