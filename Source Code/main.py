@@ -1,3 +1,5 @@
+import datetime; import time; import support ; import function
+
 # ============================== MAIN PROGRAM =======================================
 
 # KAMUS GLOBAL
@@ -18,120 +20,123 @@
 
 # INISIALISASI
 user =[]; game = []; riwayat = []; kepemilikan = []; temp_history = []
-user_id = ""; saldo = 0
+user_id = ""
 
-# lstPerintah = ['register', 'login', 'carirarity', 'caritahun', 'tambahitem', 'hapusitem', 'ubahjumlah', 'pinjam', 
-             # 'kembalikan', 'minta', 'riwayatpinjam', 'riwayatkembali', 'riwayatambil', 'save', 'help', 'gacha']
+listPerintah = ['register', 'login', 'tambah_game', 'ubah_game', 'ubah_stok', 'list_game_toko', 'buy_game', 'list_game', 
+              'list_game', 'search_my_game', 'search_game_at_store', 'topup', 'riwayat', 'save', 'exit']
              
 program = True
 hasLogin = False
-isAdmin = False
+role = ""
+username = ""
 
 # Pemanggilan procedure loading()
-directory = loading()
+# directory = load()
+load = True
 
-if not(directory == None):
+# if not(directory == None):
+if load:
     print("Loading...")
     time.sleep(2)
-    load(directory)
+    user = support.f_open("user.csv")
+    game = support.f_open("game.csv")
+    riwayat = support.f_open("riwayat.csv")
+    kepemilikan = support.f_open("kepemilikan.csv")
     print()
     print("Selamat datang di Binomo!")
+    print("Pilih menu help untuk menampilkan menu")
 
     # Jalannya program utama
     while (program):
-        # help()
         command = input(">>> ")
-        if command == "register":
-            register()
+        if command == "help":
+            function.help(role)
         elif command == "login":
             if hasLogin:
                 print("Anda sudah login, exit terlebih dahulu untuk menggunakan akun lain")
                 print()
             else:
-                login()
-                print('Halo ' + nama + '! Selamat datang di "Binomo"')
+                result = function.login(user)
+                username = result[0]
+                role = result[1]
+                saldo = result[2]
+                hasLogin = True
         elif command == "exit":
             # Asumsi exit tidak perlu login
             exit()
         else:
             if hasLogin:
                 if command == "register":
-                    if isAdmin:
-                        register()
+                    if role == "Admin":
+                        user = function.register_user(user)
                     else:
                         print("Maaf, Anda tidak memiliki akses pada menu ini")
                         print()
                 elif command == "tambah_game":
-                    if isAdmin:
-                        add_game()
+                    if role == "Admin":
+                        game = function.add_game(game)
                     else:
                         print("Maaf, Anda tidak memiliki akses pada menu ini")
                         print()
                 elif command == "ubah_game":
-                    if isAdmin:
-                        update_game()
+                    if role == "Admin":
+                        function.ubah_game(game)
                     else:
                         print("Maaf, Anda tidak memiliki akses pada menu ini")
                         print()
                 elif command == "ubah_stok":
-                    if isAdmin:
-                        update_stok()
+                    if role == "Admin":
+                        function.update_stok(role,game)
                     else:
                         print("Maaf, Anda tidak memiliki akses pada menu ini")
                         print()
                 elif command == "list_game_toko":
-                    list_game_toko()
+                    function.list_game_toko(game)
                 elif command == "buy_game":
-                    if not isAdmin:
-                        id_game = input('Masukkan ID Game: ')
-                        history = []
-                        hasil = buy_game(role,id_game,user_id,saldo,game,kepemilikan,history)
-                        history = hasil[0]
-                        saldo = hasil[1]
-                    else:    
-                        print("Maaf, Anda tidak memiliki akses pada menu ini")
-                        print()
-                elif command == "my_game":
-                    if not isAdmin:
-                        inventory()
+                    hasil = function.buy_game(role,user_id,saldo,game,kepemilikan,temp_history)
+                    history = hasil[0]
+                    saldo = hasil[1]
+                    kepemilikan = hasil[2]
+                elif command == "list_game":
+                    if role == "User":
+                        pass
+                        # inventory()
                     else:
                         print("Maaf, Anda tidak memiliki akses pada menu ini")
                         print()
                 elif command == "search_my_game":
-                    if not isAdmin:
-                        search_my_game(role,user_id,kepemilikan,game)
+                    function.search_my_game(role,user_id,kepemilikan,game)
+                elif command == "search_game_at_store":
+                    function.search_game_at_store(game)
+                elif command == "topup":
+                    if role == "Admin":
+                        function.topup(user)
+                        # asumsi admin tidak akan mengisi saldo sesama admin
                     else:
                         print("Maaf, Anda tidak memiliki akses pada menu ini")
                         print()
-                elif command == "search_game_at_store":
-                    search()
-                elif command == "topup":
-                    if isAdmin:
-                        topup()
+                elif command == "riwayat":
+                    if role == "User":    
+                        function.riwayat_pembelian(riwayat,user,username)
                     else:
-                        print("Maaf, hanya boleh diakses oleh admin ^_^")
+                        print("Maaf, Anda tidak memiliki akses pada menu ini")
                         print()
-                elif command == "history":
-                    if not isAdmin:    
-                        riwayat()
-                    else:
-                        print("Maaf, hanya boleh diakses oleh admin ^_^")
-                        print()
+                elif command == "game":
+                    print(game)
+                elif command == "user":
+                    print(user)
                 elif command == "help":
-                    if isAdmin:
-                        help("admin")
-                    else:
-                        help("user")
+                    function.help(role)
                 elif command == "save":
-                    save()
-                elif command == "exit":
-                    exit()
+                    function.save(user,game,riwayat,kepemilikan)
+                elif command == "exit_program":
+                    function.exit_program(user,game,riwayat,kepemilikan)
                 else:
                     # Masukan salah, tidak sesuai keyword yang valid, sudah login
                     print("Input anda tidak valid")
                     print("Berikut merupakan input yang valid")
-                    help()        
-            elif command in lstPerintah:
+                    function.help(role)        
+            elif support.f_search(listPerintah, command):
                 # Masukan benar, tetapi belum login
                 print("Anda harus login terlebih dahulu")
                 print()
