@@ -18,6 +18,8 @@ def load ():
             with open(f"{namafolder}/kepemilikan.csv",'r') as file:
                 kepemilikan=file.readlines()
             return (gantikoma(game),gantikoma(user),gantikoma(riwayat),gantikoma(kepemilikan)) 
+        else : 
+            print (f"folder {args.x} tidak ditemukan")
     else:
         print ("Tidak ada nama folder yang diberikan!")
 
@@ -39,6 +41,5 @@ def gantikoma (x):
     return arraybaru 
 
     
-print(load())
  
 
