@@ -37,6 +37,7 @@ def add_game():
         else:
             valid = True
     
+    # Pembuatan ID game
     count = 0
     for i in range(len(game)):
         if game[i][0] == 'GAME'+str(i+1):
