@@ -19,7 +19,7 @@ import datetime; import time; import support ; import function
 
 
 # INISIALISASI
-user =[]; game = []; riwayat = []; kepemilikan = []; temp_history = []
+user =[]; game = []; riwayat = []; kepemilikan = []; # temp_history = []
 user_id = ""
 
 listPerintah = ['register', 'login', 'tambah_game', 'ubah_game', 'ubah_stok', 'list_game_toko', 'buy_game', 'list_game', 
@@ -32,21 +32,21 @@ username = ""
 
 # Pemanggilan procedure loading()
 # directory = load()
-load = True
+loaded = False
 
 # if not(directory == None):
-if load:
-    print("Loading...")
-    time.sleep(2)
-    user = support.f_open("user.csv")
-    game = support.f_open("game.csv")
-    riwayat = support.f_open("riwayat.csv")
-    kepemilikan = support.f_open("kepemilikan.csv")
+if not loaded:
+    loaded_file = function.load(loaded)
+    loaded = loaded_file[0]
+    game = loaded_file[1]
+    user = loaded_file[2]
+    riwayat = loaded_file[3]
+    kepemilikan = loaded_file[4]
+
+if loaded:
     print()
     print("Selamat datang di Binomo!")
     print("Pilih menu help untuk menampilkan menu")
-
-    # Jalannya program utama
     while (program):
         command = input(">>> ")
         if command == "help":
@@ -57,10 +57,11 @@ if load:
                 print()
             else:
                 result = function.login(user)
-                username = result[0]
-                role = result[1]
-                saldo = result[2]
-                hasLogin = True
+                user_id = result[0]
+                username = result[1]
+                role = result[2]
+                saldo = int(result[3])
+                hasLogin = result[4]
         elif command == "exit":
             # Asumsi exit tidak perlu login
             exit()
@@ -93,17 +94,12 @@ if load:
                 elif command == "list_game_toko":
                     function.list_game_toko(game)
                 elif command == "buy_game":
-                    hasil = function.buy_game(role,user_id,saldo,game,kepemilikan,temp_history)
-                    history = hasil[0]
+                    hasil = function.buy_game(role,user_id,saldo,game,kepemilikan,riwayat)
+                    riwayat = hasil[0]
                     saldo = hasil[1]
                     kepemilikan = hasil[2]
                 elif command == "list_game":
-                    if role == "User":
-                        pass
-                        # inventory()
-                    else:
-                        print("Maaf, Anda tidak memiliki akses pada menu ini")
-                        print()
+                    function.list_game(role,user_id,kepemilikan,game)
                 elif command == "search_my_game":
                     function.search_my_game(role,user_id,kepemilikan,game)
                 elif command == "search_game_at_store":
@@ -116,8 +112,8 @@ if load:
                         print("Maaf, Anda tidak memiliki akses pada menu ini")
                         print()
                 elif command == "riwayat":
-                    if role == "User":    
-                        function.riwayat_pembelian(riwayat,user,username)
+                    if role == "User":   
+                        function.riwayat_pembelian(riwayat,user,username) # antara pake riwayat.csv atau variabel temp_history
                     else:
                         print("Maaf, Anda tidak memiliki akses pada menu ini")
                         print()
@@ -128,6 +124,9 @@ if load:
                 elif command == "help":
                     function.help(role)
                 elif command == "save":
+                    for line in user:
+                        if line[0] == user_id:
+                            line[5] = str(saldo)
                     function.save(user,game,riwayat,kepemilikan)
                 elif command == "exit_program":
                     function.exit_program(user,game,riwayat,kepemilikan)
