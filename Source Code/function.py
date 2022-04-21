@@ -1,4 +1,4 @@
-import support ; import datetime
+import support ; import datetime ; import os ; import argparse ; import sys ; import time
 # ============================ SUBPROGRAM ==========================
 # F02 - Register
 def register_user(user):
@@ -39,7 +39,7 @@ def register_user(user):
     
     id = "User" + str(count+1)
 
-    saldo = 0
+    saldo = "0"
 
     # jika data sudah valid, data akan dimasukkan ke array "user"
     if valid:
@@ -53,17 +53,20 @@ def login (user):
     username = input("Masukkan username: ")
     pw = input('Masukkan passsword: ')
     status=False
-
+    user_id = ""
+    role = ""
+    saldo = "0"
     for i in (user):
         if username == i[1] and pw == i[3]: 
             status=True 
             print(f'Halo {i[2]}! Selamat datang di "Binomo"')
+            user_id = i[0]
             role = i[4]
             saldo = i[5]
-            return username,role,saldo
+            return user_id,username,role,saldo,status
     if status == False:
         print('Password atau username salah atau tidak ditemukan.')
-        return 
+        return user_id,username,role,saldo,status
 
 # F04 - Menambahkan game
 def add_game(game):
@@ -75,9 +78,6 @@ def add_game(game):
     # nama_game, kategori, tahun_rilis, harga_game, stok_awal: string
     # valid : boolean
     # add_game, game : array of array of string
-    
-    # Variable global
-    # global game
 
     # Algoritma
     # Menerima input informasi tentang game yang ingin ditambahkan
@@ -92,7 +92,7 @@ def add_game(game):
     while not valid :
         # Meminta input ulang jika input yang diberikan tidak valid
         if nama_game == "" or kategori == "" or tahun_rilis == "" or harga_game == "" or stok_awal == "":
-            print("Mohon masukkan semua informasi mengenai game agar dapat disimopan di BNMO.")
+            print("Mohon masukkan semua informasi mengenai game agar dapat disimpan di BNMO.")
             nama_game = input("Masukkan nama game: ")
             kategori = input("Masukkan kategori: ")
             tahun_rilis = input("Masukkan tahun rilis: ")
@@ -102,12 +102,28 @@ def add_game(game):
         else:
             valid = True
     
+    # Mencari tahu ID terakhir dari data yang sudah ada
     count = 0
-    for i in range(support.f_len(game)):
-        if game[i][0][0] == 'U':
-            count += 1
+    if (support.f_len(game)) != 0:
+        count = 1
+        for i in range(support.f_len(game)):
+            if 0 < i <= 9:
+                if game[i][0] == 'GAME00'+str(i+1):
+                    count += 1
+            elif 9 < i <= 99:
+                if game[i][0] == 'GAME0'+str(i+1):
+                    count += 1
+            else:
+                if game[i][0] == 'GAME'+str(i+1):
+                    count += 1
     
-    id_game = "GAME" + str(count+1)
+    # Memberikan ID pada game
+    if 0 <= count <= 9:
+        id_game = "GAME00" + str(count+1)
+    elif 9 < count <= 99:
+        id_game = "GAME0" + str(count+1)
+    elif 99 < count <= 999:
+        id_game = "GAME" + str(count+1)
 
     # Menyampaikan pesan sukses dan menambahkan informasi ke dalam database game ketika data sudah valid
     if valid:
@@ -117,6 +133,7 @@ def add_game(game):
         return game
 
 # F05 - Mengubah Game
+# Asumsi data game tidak kosong
 def ubah_game (game):
     id_game=input('Masukkan ID game: ')
     index=0
@@ -129,13 +146,18 @@ def ubah_game (game):
     kategori=input('Masukkan kategori: ')
     tahun_rilis=input('Masukkan tahun rilis: ')
     harga_game=input('Masukkan harga: ')
-    j=1
-    for i in (nama_game,kategori,tahun_rilis,harga_game): 
-        if i != '':
-            game[index][j]=i 
-        j+=1
+
+    if game == []:
+        print("Data game pada toko kosong, silahkan minta Admin untuk menambahkan Game pada toko.")
+    else:
+        j=1
+        for i in (nama_game,kategori,tahun_rilis,harga_game): 
+            if i != '':
+                game[index][j]=i 
+            j+=1
 
 # F06 - Mengubah stok
+# Asumsi data game tidak kosong
 def update_stok(role,game):
     # fungsi yang digunakan untuk mengubah stok game pada toko
     
@@ -149,17 +171,22 @@ def update_stok(role,game):
         id_game = input('Masukkan ID game: ')
         jumlah = int(input('Masukkan jumlah: '))
         found = False
-         
-        for line in game:
-            if id_game == line[0]:
-                found = True
-                if (line[5] + jumlah) >= 0: 
-                    line[5] += jumlah
-                    print('Stok game', line[1], 'berhasil ditambahkan. Stok sekarang:', line[5])
-                else:
-                    print('Stok game', line[1], 'gagal dikurangi karena stok kurang. Stok sekarang:', line[5])
-        if not found:
-            print('Tidak ada game dengan ID tersebut')
+        
+        if game == []:
+            print("Data game pada toko kosong, silahkan minta Admin untuk menambahkan Game pada toko.")
+        else:
+            for line in game:
+                if id_game == line[0]:
+                    found = True
+                    if (int(line[5]) + jumlah) >= 0:
+                        line[5] = int(line[5])
+                        line[5] += jumlah
+                        line[5] = str(line[5])
+                        print('Stok game', line[1], 'berhasil ditambahkan. Stok sekarang:', line[5])
+                    else:
+                        print('Stok game', line[1], 'gagal dikurangi karena stok kurang. Stok sekarang:', line[5])
+            if not found:
+                print('Tidak ada game dengan ID tersebut')
     else:
         print('Kamu tidak memiliki akses pada menu ini')
 
@@ -201,76 +228,78 @@ def list_game_toko(game):
 
     list_game = game
     skema = input("Skema sorting : ")
-
-    #mengurutkan berdasarkan Harga (kecil ke besar)
-    if skema == "harga-":
-        temp = 0
-        for i in range (support.f_len(list_game)):
-            for j in range (i, support.f_len(list_game)):
-                if list_game[j][4] == max(list_game, skema, i):
-                    temp = list_game[j]
-                    list_game[j] = list_game[i]
-                    list_game[i] = temp
-        for i in range(support.f_len(list_game)):
-            print(i+1, end=". ")
-            for j in range (6):
-                print(list_game[i][j], end = " | ")
-            print()
-
-    #mengurutkan berdasarkan Tahun Rilis (kecil ke besar)
-    elif skema == "tahun-":
-        temp = 0
-        for i in range (support.f_len(list_game)):
-            for j in range (i, support.f_len(list_game)):
-                if list_game[j][3] == max(list_game, skema, i):
-                    temp = list_game[j]
-                    list_game[j] = list_game[i]
-                    list_game[i] = temp
-        for i in range(support.f_len(list_game)):
-            print(i+1, end=". ")
-            for j in range (6):
-                print(list_game[i][j], end = " | ")
-            print()
-
-    #mengurutkan berdasarkan Tahun Rilis (besar ke kecil)        
-    elif skema == "tahun+":
-        temp = 0
-        for i in range (support.f_len(list_game)):
-            for j in range (i, support.f_len(list_game)):
-                if list_game[j][3] == min(list_game, skema, i):
-                    temp = list_game[j]
-                    list_game[j] = list_game[i]
-                    list_game[i] = temp
-        for i in range(support.f_len(list_game)):
-            print(i+1, end=". ")
-            for j in range (6):
-                print(list_game[i][j], end = " | ")
-            print()
-
-    #mengurutkan berdasarkan Harga (besar ke kecil)        
-    elif skema == "harga+":
-        temp = 0
-        for i in range (support.f_len(list_game)):
-            for j in range (i, support.f_len(list_game)):
-                if list_game[j][4] == min(list_game, skema, i):
-                    temp = list_game[j]
-                    list_game[j] = list_game[i]
-                    list_game[i] = temp
-        for i in range(support.f_len(list_game)):
-            print(i+1, end=". ")
-            for j in range (6):
-                print(list_game[i][j], end = " | ")
-            print()
-    elif skema == "" or skema == " ":
-        for i in range(support.f_len(list_game)):
-            print(i+1, end=". ")
-            for j in range (6):
-                print(list_game[i][j], end = " | ")
-            print()
-        
-    #input skema tidak sesuai
+    if game == []:
+        print("Data game pada toko kosong, silahkan minta Admin untuk menambahkan Game pada toko.")
     else:
-        print("Skema sorting tidak valid!")
+        #mengurutkan berdasarkan Harga (kecil ke besar)
+        if skema == "harga-":
+            temp = 0
+            for i in range (support.f_len(list_game)):
+                for j in range (i, support.f_len(list_game)):
+                    if list_game[j][4] == max(list_game, skema, i):
+                        temp = list_game[j]
+                        list_game[j] = list_game[i]
+                        list_game[i] = temp
+            for i in range(support.f_len(list_game)):
+                print(i+1, end=". ")
+                for j in range (6):
+                    print(list_game[i][j], end = " | ")
+                print()
+
+        #mengurutkan berdasarkan Tahun Rilis (kecil ke besar)
+        elif skema == "tahun-":
+            temp = 0
+            for i in range (support.f_len(list_game)):
+                for j in range (i, support.f_len(list_game)):
+                    if list_game[j][3] == max(list_game, skema, i):
+                        temp = list_game[j]
+                        list_game[j] = list_game[i]
+                        list_game[i] = temp
+            for i in range(support.f_len(list_game)):
+                print(i+1, end=". ")
+                for j in range (6):
+                    print(list_game[i][j], end = " | ")
+                print()
+
+        #mengurutkan berdasarkan Tahun Rilis (besar ke kecil)        
+        elif skema == "tahun+":
+            temp = 0
+            for i in range (support.f_len(list_game)):
+                for j in range (i, support.f_len(list_game)):
+                    if list_game[j][3] == min(list_game, skema, i):
+                        temp = list_game[j]
+                        list_game[j] = list_game[i]
+                        list_game[i] = temp
+            for i in range(support.f_len(list_game)):
+                print(i+1, end=". ")
+                for j in range (6):
+                    print(list_game[i][j], end = " | ")
+                print()
+
+        #mengurutkan berdasarkan Harga (besar ke kecil)        
+        elif skema == "harga+":
+            temp = 0
+            for i in range (support.f_len(list_game)):
+                for j in range (i, support.f_len(list_game)):
+                    if list_game[j][4] == min(list_game, skema, i):
+                        temp = list_game[j]
+                        list_game[j] = list_game[i]
+                        list_game[i] = temp
+            for i in range(support.f_len(list_game)):
+                print(i+1, end=". ")
+                for j in range (6):
+                    print(list_game[i][j], end = " | ")
+                print()
+        elif skema == "" or skema == " ":
+            for i in range(support.f_len(list_game)):
+                print(i+1, end=". ")
+                for j in range (6):
+                    print(list_game[i][j], end = " | ")
+                print()
+            
+        #input skema tidak sesuai
+        else:
+            print("Skema sorting tidak valid!")
 
 # F08 - Membeli game
 def buy_game (role, user_id, saldo, game, kepemilikan, temp_history):
@@ -284,7 +313,6 @@ def buy_game (role, user_id, saldo, game, kepemilikan, temp_history):
     # ALGORITMA
     date = datetime.datetime.now()
     if role == 'User':
-        temp_history = []
         id_game = input('Masukkan ID Game: ')
         found = False
 
@@ -293,24 +321,30 @@ def buy_game (role, user_id, saldo, game, kepemilikan, temp_history):
             if (id_game == line[0]) and (user_id == line[3]):
                 print("Anda sudah memiliki Game tersebut!")
                 found = True
-                return temp_history, saldo
+                return temp_history, saldo, kepemilikan
 
         # melakukan pengecekan pada riwayat pembelian sebelumnya yang sudah di save
         for line in kepemilikan :
             if (id_game == line[0]) and (user_id == line[1]):
                 print("Anda sudah memiliki Game tersebut!")
                 found = True
-                return temp_history, saldo
-            else: # jika game belum ada dalam riwayat pembelian, maka User bisa membeli game pada toko
+                return temp_history, saldo, kepemilikan
+        if not found: # jika game belum ada dalam riwayat pembelian, maka User bisa membeli game pada toko
+            if game == []:
+                print("Data game pada toko kosong, silahkan minta Admin untuk menambahkan Game pada toko.")
+                return temp_history, saldo, kepemilikan
+            else:
                 for line in game:
                     if (id_game == line[0]):
                         if (int(line[5]) > 0):
-                            if saldo >= line[4]:
-                                new_saldo = saldo - line[4]
-                                print("Game", line[1], "berhasil dibeli!")
-                                temp_history = support.f_append(temp_history,[line[0],line[1],line[4],user_id,date.year])
+                            if saldo >= int(line[4]):
+                                line[5] = int(line[5])
                                 found = True
+                                new_saldo = saldo - int(line[4])
+                                print("Game", line[1], "berhasil dibeli!")
                                 line[5] = line[5] - 1
+                                line[5] = str(line[5])
+                                temp_history = support.f_append(temp_history,[line[0],line[1],line[4],user_id,date.year])
                                 kepemilikan = support.f_append(kepemilikan, [line[0],user_id])
                                 return temp_history, new_saldo, kepemilikan
                             else:
@@ -329,6 +363,35 @@ def buy_game (role, user_id, saldo, game, kepemilikan, temp_history):
         return temp_history, saldo, kepemilikan
 
 # F09 - Melihat Game yang dimiliki
+def list_game(role,user_id,kepemilikan,game):
+    if role == "User":
+        owned_game_id = []
+        my_game = []
+
+        for line in kepemilikan:
+                if line[1] == user_id:
+                    owned_game_id = support.f_append (owned_game_id,line[0])
+        
+        if owned_game_id == []:
+            print("Maaf, kamu belum membeli game. Ketik perintah buy_game untuk beli.")
+        else:
+            for i in range(support.f_len(owned_game_id)):
+                for line in game:
+                    if line[0] == owned_game_id[i]:
+                        my_game = support.f_append(my_game,[line[0],line[1],line[4],line[2],line[3]]) # menyimpan data game yang dimiliki pada variabel my_game
+            
+            print("Daftar game:")
+            for i in range(support.f_len(my_game)):
+                print(str(i+1) + ".", end=" ")
+                for j in range(support.f_len(my_game[0])):
+                    if(j == support.f_len(my_game[0])-1):
+                        print(my_game[i][j])
+                    else:
+                        print(my_game[i][j],end = " | ")
+            return
+    else:
+        print("Anda tidak memiliki akses pada menu ini")
+        return
 
 # F10 - Mencari Game yang dimiliki dari ID dan tahun rilis
 def search_my_game(role,user_id,kepemilikan,game):
@@ -342,51 +405,59 @@ def search_my_game(role,user_id,kepemilikan,game):
         for line in kepemilikan:
                 if line[1] == user_id:
                     owned_game_id = support.f_append (owned_game_id,line[0])
-
-        print("Daftar game pada inventory yang memenuhi kriteria:")
-        if game_id == "":
-            if tahun_rilis == "":
-            # jika User tidak memasukan kedua parameter, maka program akan menampilkan seluruh game yang dimiliki oleh User
-                for i in range(support.f_len(owned_game_id)):
-                    for line in game:
-                        if line[0] == owned_game_id[i]:
-                            my_game = support.f_append(my_game,[line[0],line[1],line[4],line[2],line[3]]) # menyimpan data game yang dimiliki pada variabel my_game
-                            count += 1
-            else: # tahun_rilis != ""
-            # jika User hanya memasukan parameter tahun rilis, maka program akan menampilkan seluruh game yang dimiliki oleh User berdasarkan tahun rilisnya
-                for i in range(support.f_len(owned_game_id)):
-                    for line in game:
-                        if line[0] == owned_game_id[i] and line[3] == tahun_rilis:
-                            my_game = support.f_append(my_game,[line[0],line[1],line[4],line[2],line[3]])
-                            count += 1
-
-        else: # game_id != ""
-            if tahun_rilis == "":
-            # jika User hanya memasukan parameter ID Game maka program akan menampilkan seluruh game yang dimiliki oleh User berdasarkan ID Game yang dimasukan
-                for i in range(support.f_len(owned_game_id)):
-                    if owned_game_id[i] == game_id:
+        # melakukan pengecekan kepemilikan game User
+        if owned_game_id == []:
+            print("Maaf, kamu belum membeli game. Ketik perintah buy_game untuk beli.")
+        else:
+            print("Daftar game pada inventory yang memenuhi kriteria:")
+            if game_id == "":
+                if tahun_rilis == "":
+                # jika User tidak memasukan kedua parameter, maka program akan menampilkan seluruh game yang dimiliki oleh User
+                    for i in range(support.f_len(owned_game_id)):
                         for line in game:
                             if line[0] == owned_game_id[i]:
-                                my_game = support.f_append(my_game,[line[0],line[1],line[4],line[2],line[3]])
+                                my_game = support.f_append(my_game,[line[0],line[1],line[4],line[2],line[3]]) # menyimpan data game yang dimiliki pada variabel my_game
                                 count += 1
-            else: # tahun_rilis != ""
-            # jika User memasukan kedua parameter yang ada maka program akan menampilkan seluruh game yang dimiliki oleh User berdasarkan ID Game dan tahun rilisnya
-                for i in range(support.f_len(owned_game_id)):
-                    if owned_game_id[i] == game_id:
+                else: # tahun_rilis != ""
+                # jika User hanya memasukan parameter tahun rilis, maka program akan menampilkan seluruh game yang dimiliki oleh User berdasarkan tahun rilisnya
+                    for i in range(support.f_len(owned_game_id)):
                         for line in game:
-                            if line[0] == game_id and line[3] == tahun_rilis:
+                            if line[0] == owned_game_id[i] and line[3] == tahun_rilis:
                                 my_game = support.f_append(my_game,[line[0],line[1],line[4],line[2],line[3]])
                                 count += 1
 
-        # menampilkan daftar game yang memenuhi kriteria pencarian berdasarkan parameter
-        if count == 0:
-            print("Tidak ada game pada inventory-mu yang memenuhi kriteria")
-        else:
-            nomor = 1
-            for line in my_game:
-                print(str(nomor) + ". " + str(line[0]) + " | " + str(line[1]) + " | " + str(line[4]) + " | " + str(line[2]) + " | " + str(line[3]))
-                nomor += 1
-        return
+            else: # game_id != ""
+                if tahun_rilis == "":
+                # jika User hanya memasukan parameter ID Game maka program akan menampilkan seluruh game yang dimiliki oleh User berdasarkan ID Game yang dimasukan
+                    for i in range(support.f_len(owned_game_id)):
+                        if owned_game_id[i] == game_id:
+                            for line in game:
+                                if line[0] == owned_game_id[i]:
+                                    my_game = support.f_append(my_game,[line[0],line[1],line[4],line[2],line[3]])
+                                    count += 1
+                else: # tahun_rilis != ""
+                # jika User memasukan kedua parameter yang ada maka program akan menampilkan seluruh game yang dimiliki oleh User berdasarkan ID Game dan tahun rilisnya
+                    for i in range(support.f_len(owned_game_id)):
+                        if owned_game_id[i] == game_id:
+                            for line in game:
+                                if line[0] == game_id and line[3] == tahun_rilis:
+                                    my_game = support.f_append(my_game,[line[0],line[1],line[4],line[2],line[3]])
+                                    count += 1
+
+            # menampilkan daftar game yang memenuhi kriteria pencarian berdasarkan parameter
+            if count == 0:
+                print("Tidak ada game pada inventory-mu yang memenuhi kriteria")
+            else:
+                # for line in my_game:
+                for i in range(support.f_len(my_game)):
+                    print(str(i+1) + ".", end=" ")
+                    for j in range(support.f_len(my_game[0])):
+                        if(j == support.f_len(my_game[0])-1):
+                            print(my_game[i][j])
+                        else:
+                            print(my_game[i][j],end = " | ")
+                    # print(str(nomor) + ". " + str(line[0]) + " | " + str(line[1]) + " | " + str(line[4]) + " | " + str(line[2]) + " | " + str(line[3]))
+            return
 
     else:
         print("Anda tidak memiliki akses pada menu ini")
@@ -414,552 +485,554 @@ def search_game_at_store(game):
     count = 0
     game_valid = ["*" for i in range (support.f_len(inventory))]
 
-
-    if game_id == "":
-        if game_title == "":
-            if game_price == "":
-                if game_category == "":
-                    if game_year == "":
-                        #Semua parameter kosong
-                        for i in range(support.f_len(inventory)):
-                            print(i+1, end=". ")
-                            for j in range (6):
-                                print(inventory[i][j], end = " | ")
-                            print()
-                    else:
-                        #Semua paramater kosong kecuali Tahun Rilis
-                        for i in range (support.f_len(inventory)):
-                            if inventory[i][3] == game_year:
-                                game_valid[count] = inventory[i]
-                                count += 1
-                        if not count==0:
-                            print("Daftar game pada toko yang memenuhi kriteria: ")
-                            for i in range(count):
-                                print(i+1, end=". ")
-                                for j in range (6):
-                                    print(game_valid[i][j], end=" | ")
-                                print()
-                        else:
-                            print("Tidak ada game pada toko yang memenuhi kriteria.")
-                else:
-                    #Semua parameter kosong kecuali Kategori
-                    if game_year == "":
-                        for i in range(support.f_len(inventory)):
-                            if inventory[i][2] == game_category:
-                                game_valid[count] = inventory[i]
-                                count += 1
-                        if not count==0:
-                            print("Daftar game pada toko yang memenuhi kriteria: ")
-                            for i in range(count):
-                                print(i+1, end=". ")
-                                for j in range (6):
-                                    print(game_valid[i][j], end=" | ")
-                                print()
-                        else:
-                            print("Tidak ada game pada toko yang memenuhi kriteria.")
-                    else:
-                        #Parameter Tahun Rilis dan Kategori ada (tidak kosong)
-                        for i in range (support.f_len(inventory)):
-                            if inventory[i][2] == game_category:
-                                if inventory[i][3] == game_year:
-                                    game_valid[count] = inventory[i]
-                                    count += 1
-                        if not count==0:
-                            print("Daftar game pada toko yang memenuhi kriteria: ")
-                            for i in range(count):
-                                print(i+1, end=". ")
-                                for j in range (6):
-                                    print(game_valid[i][j], end=" | ")
-                                print()
-                        else:
-                            print("Tidak ada game pada toko yang memenuhi kriteria.")
-            else:
-                if game_category == "":
-                    if game_year == "":
-                        #Semua parameter kosong kecuali Harga
-                        for i in range(support.f_len(inventory)):
-                            if int(game_price) == inventory[i][4]:
-                                game_valid[count] = inventory[i]
-                                count += 1
-                        if not count == 0:
-                            print("Daftar game pada toko yang memenuhi kriteria: ")
-                            for i in range(count):
-                                print(i+1, end=". ")
-                                for j in range (6):
-                                    print(game_valid[i][j], end=" | ")
-                        else:
-                            print("Tidak ada game pada toko yang memenuhi kriteria.")
-                    else:
-                        #Parameter Harga dan Tahun Rilis ada (tidak kosong)
-                        for i in range (support.f_len(inventory)):
-                            if inventory[i][4] == int(game_price):
-                                if inventory[i][3] == game_year:
-                                    game_valid[count] = inventory[i]
-                                    count += 1
-                        if not count==0:
-                            print("Daftar game pada toko yang memenuhi kriteria: ")
-                            for i in range(count):
-                                print(i+1, end=". ")
-                                for j in range (6):
-                                    print(game_valid[i][j], end=" | ")
-                                print()
-                        else:
-                            print("Tidak ada game pada toko yang memenuhi kriteria.")
-                else:
-                    if game_year == "":
-                        #Parameter Harga dan Kategori ada (tidak kosong)
-                        for i in range(support.f_len(inventory)):
-                            if inventory[i][4] == int(game_price):
-                                if inventory[i][2] == game_category:
-                                    game_valid[count] = inventory[i]
-                                    count += 1
-                        if not count==0:
-                            print("Daftar game pada toko yang memenuhi kriteria: ")
-                            for i in range(count):
-                                print(i+1, end=". ")
-                                for j in range (6):
-                                    print(game_valid[i][j], end=" | ")
-                                print()
-                        else:
-                            print("Tidak ada game pada toko yang memenuhi kriteria.")
-                    else:
-                        for i in range (support.f_len(inventory)):
-                            #Parameter Harga, Kategori dan Tahun Rilis ada (tidak kosong)
-                            if inventory[i][4] == int(game_price):
-                                if inventory[i][2] == game_category:
-                                    if inventory[i][3] == game_year:
-                                        game_valid[count] = inventory[i]
-                                        count += 1
-                        if not count==0:
-                            print("Daftar game pada toko yang memenuhi kriteria: ")
-                            for i in range(count):
-                                print(i+1, end=". ")
-                                for j in range (6):
-                                    print(game_valid[i][j], end=" | ")
-                                print()
-                        else:
-                            print("Tidak ada game pada toko yang memenuhi kriteria.")
-        else:
-            if game_price == "":
-                if game_category == "":
-                    if game_year == "":
-                        #Semua parameter kosong kecuali Nama
-                        for i in range(support.f_len(inventory)):
-                            if game_title == inventory[i][1]:
-                                game_valid[count] = inventory[i]
-                                count += 1
-                        if not count == 0:
-                            print("Daftar game pada toko yang memenuhi kriteria: ")
-                            for i in range(count):
-                                print(i+1, end=". ")
-                                for j in range (6):
-                                    print(game_valid[i][j], end=" | ")
-                        else:
-                            print("Tidak ada game pada toko yang memenuhi kriteria.")
-                    else:
-                        #Parameter Nama dan Tahun Rilis ada (tidak kosong)
-                        for i in range (support.f_len(inventory)):
-                            if game_title == inventory[i][1]:
-                                if inventory[i][3] == game_year:
-                                    game_valid[count] = inventory[i]
-                                    count += 1
-                        if not count==0:
-                            print("Daftar game pada toko yang memenuhi kriteria: ")
-                            for i in range(count):
-                                print(i+1, end=". ")
-                                for j in range (6):
-                                    print(game_valid[i][j], end=" | ")
-                                print()
-                        else:
-                            print("Tidak ada game pada toko yang memenuhi kriteria.")
-                else:
-                    if game_year == "":
-                        #Parameter Nama dan Kategori ada (tidak kosong)
-                        for i in range(support.f_len(inventory)):
-                            if game_title == inventory[i][1]:
-                                if inventory[i][2] == game_category:
-                                    game_valid[count] = inventory[i]
-                                    count += 1
-                        if not count==0:
-                            print("Daftar game pada toko yang memenuhi kriteria: ")
-                            for i in range(count):
-                                print(i+1, end=". ")
-                                for j in range (6):
-                                    print(game_valid[i][j], end=" | ")
-                                print()
-                        else:
-                            print("Tidak ada game pada toko yang memenuhi kriteria.")
-                    else:
-                        #Parameter Nama, Kategori dan Tahun Rilis ada (tidak kosong)
-                        for i in range (support.f_len(inventory)):
-                            if game_title == inventory[i][1]:
-                                if inventory[i][2] == game_category:
-                                    if inventory[i][3] == game_year:
-                                        game_valid[count] = inventory[i]
-                                        count += 1
-                        if not count==0:
-                            print("Daftar game pada toko yang memenuhi kriteria: ")
-                            for i in range(count):
-                                print(i+1, end=". ")
-                                for j in range (6):
-                                    print(game_valid[i][j], end=" | ")
-                                print()
-                        else:
-                            print("Tidak ada game pada toko yang memenuhi kriteria.")
-            else:
-                if game_category == "":
-                    if game_year == "":
-                        #Parameter Nama dan Harga ada (tidak kosong)
-                        for i in range(support.f_len(inventory)):
-                            if game_title == inventory[i][1]:
-                                if int(game_price) == inventory[i][4]:
-                                    game_valid[count] = inventory[i]
-                                    count += 1
-                        if not count == 0:
-                            print("Daftar game pada toko yang memenuhi kriteria: ")
-                            for i in range(count):
-                                print(i+1, end=". ")
-                                for j in range (6):
-                                    print(game_valid[i][j], end=" | ")
-                        else:
-                            print("Tidak ada game pada toko yang memenuhi kriteria.")
-                    else:
-                        for i in range (support.f_len(inventory)):
-                            #Parameter Nama, Harga dan Tahun ada (tidak kosong)
-                            if game_title == inventory[i][1]:
-                                if inventory[i][4] == int(game_price):
-                                    if inventory[i][3] == game_year:
-                                        game_valid[count] = inventory[i]
-                                        count += 1
-                        if not count==0:
-                            print("Daftar game pada toko yang memenuhi kriteria: ")
-                            for i in range(count):
-                                print(i+1, end=". ")
-                                for j in range (6):
-                                    print(game_valid[i][j], end=" | ")
-                                print()
-                        else:
-                            print("Tidak ada game pada toko yang memenuhi kriteria.")
-                else:
-                    if game_year == "":
-                        for i in range(support.f_len(inventory)):
-                            #Parameter Nama, Harga dan Kategori ada (tidak kosong)
-                            if game_title == inventory[i][1]:
-                                if inventory[i][4] == int(game_price):
-                                    if inventory[i][2] == game_category:
-                                        game_valid[count] = inventory[i]
-                                        count += 1
-                        if not count==0:
-                            print("Daftar game pada toko yang memenuhi kriteria: ")
-                            for i in range(count):
-                                print(i+1, end=". ")
-                                for j in range (6):
-                                    print(game_valid[i][j], end=" | ")
-                                print()
-                        else:
-                            print("Tidak ada game pada toko yang memenuhi kriteria.")
-                    else:
-                        for i in range (support.f_len(inventory)):
-                            #Semua Parameter ada (tidak kosong) kecuali ID
-                            if game_title == inventory[i][1]:
-                                if inventory[i][4] == int(game_price):
-                                    if inventory[i][2] == game_category:
-                                        if inventory[i][3] == game_year:
-                                            game_valid[count] = inventory[i]
-                                            count += 1
-                        if not count==0:
-                            print("Daftar game pada toko yang memenuhi kriteria: ")
-                            for i in range(count):
-                                print(i+1, end=". ")
-                                for j in range (6):
-                                    print(game_valid[i][j], end=" | ")
-                                print()
-                        else:
-                            print("Tidak ada game pada toko yang memenuhi kriteria.")
+    if game == []:
+        print("Data game pada toko kosong, silahkan minta Admin untuk menambahkan Game pada toko.")
     else:
-        if game_title == "":
-            if game_price == "":
-                if game_category == "":
-                    if game_year == "":
-                        for i in range(support.f_len(inventory)):
-                            #Semua parameter kosong kecuali ID
-                            if game_id == inventory[i][0]:
-                                game_valid[count] = inventory[i]
-                                count += 1
-                        if not count == 0:
-                            print("Daftar game pada toko yang memenuhi kriteria: ")
-                            for i in range(count):
+        if game_id == "":
+            if game_title == "":
+                if game_price == "":
+                    if game_category == "":
+                        if game_year == "":
+                            #Semua parameter kosong
+                            for i in range(support.f_len(inventory)):
                                 print(i+1, end=". ")
                                 for j in range (6):
-                                    print(game_valid[i][j], end=" | ")
+                                    print(inventory[i][j], end = " | ")
+                                print()
                         else:
-                            print("Tidak ada game pada toko yang memenuhi kriteria.")
-                    else:
-                        for i in range (support.f_len(inventory)):
-                            #Parameter ID dan Tahun Rilis ada (tidak kosong)
-                            if game_id == inventory[i][0]:
+                            #Semua paramater kosong kecuali Tahun Rilis
+                            for i in range (support.f_len(inventory)):
                                 if inventory[i][3] == game_year:
                                     game_valid[count] = inventory[i]
                                     count += 1
-                        if not count==0:
-                            print("Daftar game pada toko yang memenuhi kriteria: ")
-                            for i in range(count):
-                                print(i+1, end=". ")
-                                for j in range (6):
-                                    print(game_valid[i][j], end=" | ")
-                                print()
-                        else:
-                            print("Tidak ada game pada toko yang memenuhi kriteria.")
-                else:
-                    if game_year == "":
-                        for i in range(support.f_len(inventory)):
-                            #Parameter ID dan Kategori ada (tidak kosong)
-                            if game_id == inventory[i][0]:
+                            if not count==0:
+                                print("Daftar game pada toko yang memenuhi kriteria: ")
+                                for i in range(count):
+                                    print(i+1, end=". ")
+                                    for j in range (6):
+                                        print(game_valid[i][j], end=" | ")
+                                    print()
+                            else:
+                                print("Tidak ada game pada toko yang memenuhi kriteria.")
+                    else:
+                        #Semua parameter kosong kecuali Kategori
+                        if game_year == "":
+                            for i in range(support.f_len(inventory)):
                                 if inventory[i][2] == game_category:
                                     game_valid[count] = inventory[i]
                                     count += 1
-                        if not count==0:
-                            print("Daftar game pada toko yang memenuhi kriteria: ")
-                            for i in range(count):
-                                print(i+1, end=". ")
-                                for j in range (6):
-                                    print(game_valid[i][j], end=" | ")
-                                print()
+                            if not count==0:
+                                print("Daftar game pada toko yang memenuhi kriteria: ")
+                                for i in range(count):
+                                    print(i+1, end=". ")
+                                    for j in range (6):
+                                        print(game_valid[i][j], end=" | ")
+                                    print()
+                            else:
+                                print("Tidak ada game pada toko yang memenuhi kriteria.")
                         else:
-                            print("Tidak ada game pada toko yang memenuhi kriteria.")
-                    else:
-                        for i in range (support.f_len(inventory)):
-                            #Parameter ID, Kategori dan Tahun Rilis ada (tidak kosong)
-                            if game_id == inventory[i][0]:
+                            #Parameter Tahun Rilis dan Kategori ada (tidak kosong)
+                            for i in range (support.f_len(inventory)):
                                 if inventory[i][2] == game_category:
                                     if inventory[i][3] == game_year:
                                         game_valid[count] = inventory[i]
                                         count += 1
-                        if not count==0:
-                            print("Daftar game pada toko yang memenuhi kriteria: ")
-                            for i in range(count):
-                                print(i+1, end=". ")
-                                for j in range (6):
-                                    print(game_valid[i][j], end=" | ")
-                                print()
-                        else:
-                            print("Tidak ada game pada toko yang memenuhi kriteria.")
-            else:
-                if game_category == "":
-                    if game_year == "":
-                        for i in range(support.f_len(inventory)):
-                            #Parameter ID dan Harga tidak kosong
-                            if game_id == inventory[i][0]:
+                            if not count==0:
+                                print("Daftar game pada toko yang memenuhi kriteria: ")
+                                for i in range(count):
+                                    print(i+1, end=". ")
+                                    for j in range (6):
+                                        print(game_valid[i][j], end=" | ")
+                                    print()
+                            else:
+                                print("Tidak ada game pada toko yang memenuhi kriteria.")
+                else:
+                    if game_category == "":
+                        if game_year == "":
+                            #Semua parameter kosong kecuali Harga
+                            for i in range(support.f_len(inventory)):
                                 if int(game_price) == inventory[i][4]:
                                     game_valid[count] = inventory[i]
                                     count += 1
-                        if not count == 0:
-                            print("Daftar game pada toko yang memenuhi kriteria: ")
-                            for i in range(count):
-                                print(i+1, end=". ")
-                                for j in range (6):
-                                    print(game_valid[i][j], end=" | ")
+                            if not count == 0:
+                                print("Daftar game pada toko yang memenuhi kriteria: ")
+                                for i in range(count):
+                                    print(i+1, end=". ")
+                                    for j in range (6):
+                                        print(game_valid[i][j], end=" | ")
+                            else:
+                                print("Tidak ada game pada toko yang memenuhi kriteria.")
                         else:
-                            print("Tidak ada game pada toko yang memenuhi kriteria.")
-                    else:
-                        for i in range (support.f_len(inventory)):
-                            #Parameter tidak kosong kecuali Nama dan Kategori
-                            if game_id == inventory[i][0]:
+                            #Parameter Harga dan Tahun Rilis ada (tidak kosong)
+                            for i in range (support.f_len(inventory)):
                                 if inventory[i][4] == int(game_price):
                                     if inventory[i][3] == game_year:
                                         game_valid[count] = inventory[i]
                                         count += 1
-                        if not count==0:
-                            print("Daftar game pada toko yang memenuhi kriteria: ")
-                            for i in range(count):
-                                print(i+1, end=". ")
-                                for j in range (6):
-                                    print(game_valid[i][j], end=" | ")
-                                print()
-                        else:
-                            print("Tidak ada game pada toko yang memenuhi kriteria.")
-                else:
-                    if game_year == "":
-                        for i in range(support.f_len(inventory)):
-                            #Parameter tidak kosong kecuali Nama dan Tahun Rilis
-                            if game_id == inventory[i][0]:
+                            if not count==0:
+                                print("Daftar game pada toko yang memenuhi kriteria: ")
+                                for i in range(count):
+                                    print(i+1, end=". ")
+                                    for j in range (6):
+                                        print(game_valid[i][j], end=" | ")
+                                    print()
+                            else:
+                                print("Tidak ada game pada toko yang memenuhi kriteria.")
+                    else:
+                        if game_year == "":
+                            #Parameter Harga dan Kategori ada (tidak kosong)
+                            for i in range(support.f_len(inventory)):
                                 if inventory[i][4] == int(game_price):
                                     if inventory[i][2] == game_category:
                                         game_valid[count] = inventory[i]
                                         count += 1
-                        if not count==0:
-                            print("Daftar game pada toko yang memenuhi kriteria: ")
-                            for i in range(count):
-                                print(i+1, end=". ")
-                                for j in range (6):
-                                    print(game_valid[i][j], end=" | ")
-                                print()
+                            if not count==0:
+                                print("Daftar game pada toko yang memenuhi kriteria: ")
+                                for i in range(count):
+                                    print(i+1, end=". ")
+                                    for j in range (6):
+                                        print(game_valid[i][j], end=" | ")
+                                    print()
+                            else:
+                                print("Tidak ada game pada toko yang memenuhi kriteria.")
                         else:
-                            print("Tidak ada game pada toko yang memenuhi kriteria.")
-                    else:
-                        for i in range (support.f_len(inventory)):
-                            #Parameter tidak kosong kecuali Nama
-                            if game_id == inventory[i][0]:
+                            for i in range (support.f_len(inventory)):
+                                #Parameter Harga, Kategori dan Tahun Rilis ada (tidak kosong)
                                 if inventory[i][4] == int(game_price):
                                     if inventory[i][2] == game_category:
                                         if inventory[i][3] == game_year:
                                             game_valid[count] = inventory[i]
                                             count += 1
-                        if not count==0:
-                            print("Daftar game pada toko yang memenuhi kriteria: ")
-                            for i in range(count):
-                                print(i+1, end=". ")
-                                for j in range (6):
-                                    print(game_valid[i][j], end=" | ")
-                                print()
-                        else:
-                            print("Tidak ada game pada toko yang memenuhi kriteria.")
-        else:
-            if game_price == "":
-                if game_category == "":
-                    if game_year == "":
-                        #Parameter ID dan Tahun tidak kosong
-                        for i in range(support.f_len(inventory)):
-                            if game_id == inventory[i][0]:
-                                if inventory[i][3] == game_year:
+                            if not count==0:
+                                print("Daftar game pada toko yang memenuhi kriteria: ")
+                                for i in range(count):
+                                    print(i+1, end=". ")
+                                    for j in range (6):
+                                        print(game_valid[i][j], end=" | ")
+                                    print()
+                            else:
+                                print("Tidak ada game pada toko yang memenuhi kriteria.")
+            else:
+                if game_price == "":
+                    if game_category == "":
+                        if game_year == "":
+                            #Semua parameter kosong kecuali Nama
+                            for i in range(support.f_len(inventory)):
+                                if game_title == inventory[i][1]:
                                     game_valid[count] = inventory[i]
                                     count += 1
-                        if not count == 0:
-                            print("Daftar game pada toko yang memenuhi kriteria: ")
-                            for i in range(count):
-                                print(i+1, end=". ")
-                                for j in range (6):
-                                    print(game_valid[i][j], end=" | ")
+                            if not count == 0:
+                                print("Daftar game pada toko yang memenuhi kriteria: ")
+                                for i in range(count):
+                                    print(i+1, end=". ")
+                                    for j in range (6):
+                                        print(game_valid[i][j], end=" | ")
+                            else:
+                                print("Tidak ada game pada toko yang memenuhi kriteria.")
                         else:
-                            print("Tidak ada game pada toko yang memenuhi kriteria.")
-                    else:
-                        for i in range (support.f_len(inventory)):
-                            #Parameter ID, Nama dan Tahun Rilis tidak kosong
-                            if game_id == inventory[i][0]:
+                            #Parameter Nama dan Tahun Rilis ada (tidak kosong)
+                            for i in range (support.f_len(inventory)):
                                 if game_title == inventory[i][1]:
                                     if inventory[i][3] == game_year:
                                         game_valid[count] = inventory[i]
                                         count += 1
-                        if not count==0:
-                            print("Daftar game pada toko yang memenuhi kriteria: ")
-                            for i in range(count):
-                                print(i+1, end=". ")
-                                for j in range (6):
-                                    print(game_valid[i][j], end=" | ")
-                                print()
-                        else:
-                            print("Tidak ada game pada toko yang memenuhi kriteria.")
-                else:
-                    if game_year == "":
-                        #Parameter ID, Nama dan Kategori tidak kosong
-                        for i in range(support.f_len(inventory)):
-                            if game_id == inventory[i][0]:
+                            if not count==0:
+                                print("Daftar game pada toko yang memenuhi kriteria: ")
+                                for i in range(count):
+                                    print(i+1, end=". ")
+                                    for j in range (6):
+                                        print(game_valid[i][j], end=" | ")
+                                    print()
+                            else:
+                                print("Tidak ada game pada toko yang memenuhi kriteria.")
+                    else:
+                        if game_year == "":
+                            #Parameter Nama dan Kategori ada (tidak kosong)
+                            for i in range(support.f_len(inventory)):
                                 if game_title == inventory[i][1]:
                                     if inventory[i][2] == game_category:
                                         game_valid[count] = inventory[i]
                                         count += 1
-                        if not count==0:
-                            print("Daftar game pada toko yang memenuhi kriteria: ")
-                            for i in range(count):
-                                print(i+1, end=". ")
-                                for j in range (6):
-                                    print(game_valid[i][j], end=" | ")
-                                print()
+                            if not count==0:
+                                print("Daftar game pada toko yang memenuhi kriteria: ")
+                                for i in range(count):
+                                    print(i+1, end=". ")
+                                    for j in range (6):
+                                        print(game_valid[i][j], end=" | ")
+                                    print()
+                            else:
+                                print("Tidak ada game pada toko yang memenuhi kriteria.")
                         else:
-                            print("Tidak ada game pada toko yang memenuhi kriteria.")
-                    else:
-                        #Parameter Harga kosong
-                        for i in range (support.f_len(inventory)):
-                            if game_id == inventory[i][0]:
+                            #Parameter Nama, Kategori dan Tahun Rilis ada (tidak kosong)
+                            for i in range (support.f_len(inventory)):
                                 if game_title == inventory[i][1]:
                                     if inventory[i][2] == game_category:
                                         if inventory[i][3] == game_year:
                                             game_valid[count] = inventory[i]
                                             count += 1
-                        if not count==0:
-                            print("Daftar game pada toko yang memenuhi kriteria: ")
-                            for i in range(count):
-                                print(i+1, end=". ")
-                                for j in range (6):
-                                    print(game_valid[i][j], end=" | ")
-                                print()
-                        else:
-                            print("Tidak ada game pada toko yang memenuhi kriteria.")
-            else:
-                if game_category == "":
-                    if game_year == "":
-                        #Parameter Kategori dan Tahun Rilis kosong
-                        for i in range(support.f_len(inventory)):
-                            if game_id == inventory[i][0]:
+                            if not count==0:
+                                print("Daftar game pada toko yang memenuhi kriteria: ")
+                                for i in range(count):
+                                    print(i+1, end=". ")
+                                    for j in range (6):
+                                        print(game_valid[i][j], end=" | ")
+                                    print()
+                            else:
+                                print("Tidak ada game pada toko yang memenuhi kriteria.")
+                else:
+                    if game_category == "":
+                        if game_year == "":
+                            #Parameter Nama dan Harga ada (tidak kosong)
+                            for i in range(support.f_len(inventory)):
                                 if game_title == inventory[i][1]:
                                     if int(game_price) == inventory[i][4]:
                                         game_valid[count] = inventory[i]
                                         count += 1
-                        if not count == 0:
-                            print("Daftar game pada toko yang memenuhi kriteria: ")
-                            for i in range(count):
-                                print(i+1, end=". ")
-                                for j in range (6):
-                                    print(game_valid[i][j], end=" | ")
+                            if not count == 0:
+                                print("Daftar game pada toko yang memenuhi kriteria: ")
+                                for i in range(count):
+                                    print(i+1, end=". ")
+                                    for j in range (6):
+                                        print(game_valid[i][j], end=" | ")
+                            else:
+                                print("Tidak ada game pada toko yang memenuhi kriteria.")
                         else:
-                            print("Tidak ada game pada toko yang memenuhi kriteria.")
-                    else:
-                        for i in range (support.f_len(inventory)):
-                            #Parameter Kategori Kosong
-                            if game_id == inventory[i][0]:
+                            for i in range (support.f_len(inventory)):
+                                #Parameter Nama, Harga dan Tahun ada (tidak kosong)
                                 if game_title == inventory[i][1]:
                                     if inventory[i][4] == int(game_price):
                                         if inventory[i][3] == game_year:
                                             game_valid[count] = inventory[i]
                                             count += 1
-                        if not count==0:
-                            print("Daftar game pada toko yang memenuhi kriteria: ")
-                            for i in range(count):
-                                print(i+1, end=". ")
-                                for j in range (6):
-                                    print(game_valid[i][j], end=" | ")
-                                print()
-                        else:
-                            print("Tidak ada game pada toko yang memenuhi kriteria.")
-                else:
-                    if game_year == "":
-                        #Parameter Tahun Rilis kosong
-                        for i in range(support.f_len(inventory)):
-                            if game_id == inventory[i][0]:
+                            if not count==0:
+                                print("Daftar game pada toko yang memenuhi kriteria: ")
+                                for i in range(count):
+                                    print(i+1, end=". ")
+                                    for j in range (6):
+                                        print(game_valid[i][j], end=" | ")
+                                    print()
+                            else:
+                                print("Tidak ada game pada toko yang memenuhi kriteria.")
+                    else:
+                        if game_year == "":
+                            for i in range(support.f_len(inventory)):
+                                #Parameter Nama, Harga dan Kategori ada (tidak kosong)
                                 if game_title == inventory[i][1]:
                                     if inventory[i][4] == int(game_price):
                                         if inventory[i][2] == game_category:
                                             game_valid[count] = inventory[i]
                                             count += 1
-                        if not count == 0:
-                            print("Daftar game pada toko yang memenuhi kriteria: ")
-                            for i in range(count):
-                                print(i+1, end=". ")
-                                for j in range (6):
-                                    print(game_valid[i][j], end=" | ")
-                                print()
+                            if not count==0:
+                                print("Daftar game pada toko yang memenuhi kriteria: ")
+                                for i in range(count):
+                                    print(i+1, end=". ")
+                                    for j in range (6):
+                                        print(game_valid[i][j], end=" | ")
+                                    print()
+                            else:
+                                print("Tidak ada game pada toko yang memenuhi kriteria.")
                         else:
-                            print("Tidak ada game pada toko yang memenuhi kriteria.")
-                           
-                    else:
-                        for i in range (support.f_len(inventory)):
-                            #Semua parameter ada (tidak kosong)
-                            if game_id == inventory[i][0]:
+                            for i in range (support.f_len(inventory)):
+                                #Semua Parameter ada (tidak kosong) kecuali ID
                                 if game_title == inventory[i][1]:
                                     if inventory[i][4] == int(game_price):
                                         if inventory[i][2] == game_category:
                                             if inventory[i][3] == game_year:
                                                 game_valid[count] = inventory[i]
                                                 count += 1
-                        if not count==0:
-                            print("Daftar game pada toko yang memenuhi kriteria: ")
-                            for i in range(count):
-                                print(i+1, end=". ")
-                                for j in range (6):
-                                    print(game_valid[i][j], end=" | ")
-                                print()
+                            if not count==0:
+                                print("Daftar game pada toko yang memenuhi kriteria: ")
+                                for i in range(count):
+                                    print(i+1, end=". ")
+                                    for j in range (6):
+                                        print(game_valid[i][j], end=" | ")
+                                    print()
+                            else:
+                                print("Tidak ada game pada toko yang memenuhi kriteria.")
+        else:
+            if game_title == "":
+                if game_price == "":
+                    if game_category == "":
+                        if game_year == "":
+                            for i in range(support.f_len(inventory)):
+                                #Semua parameter kosong kecuali ID
+                                if game_id == inventory[i][0]:
+                                    game_valid[count] = inventory[i]
+                                    count += 1
+                            if not count == 0:
+                                print("Daftar game pada toko yang memenuhi kriteria: ")
+                                for i in range(count):
+                                    print(i+1, end=". ")
+                                    for j in range (6):
+                                        print(game_valid[i][j], end=" | ")
+                            else:
+                                print("Tidak ada game pada toko yang memenuhi kriteria.")
                         else:
-                            print("Tidak ada game pada toko yang memenuhi kriteria.")
+                            for i in range (support.f_len(inventory)):
+                                #Parameter ID dan Tahun Rilis ada (tidak kosong)
+                                if game_id == inventory[i][0]:
+                                    if inventory[i][3] == game_year:
+                                        game_valid[count] = inventory[i]
+                                        count += 1
+                            if not count==0:
+                                print("Daftar game pada toko yang memenuhi kriteria: ")
+                                for i in range(count):
+                                    print(i+1, end=". ")
+                                    for j in range (6):
+                                        print(game_valid[i][j], end=" | ")
+                                    print()
+                            else:
+                                print("Tidak ada game pada toko yang memenuhi kriteria.")
+                    else:
+                        if game_year == "":
+                            for i in range(support.f_len(inventory)):
+                                #Parameter ID dan Kategori ada (tidak kosong)
+                                if game_id == inventory[i][0]:
+                                    if inventory[i][2] == game_category:
+                                        game_valid[count] = inventory[i]
+                                        count += 1
+                            if not count==0:
+                                print("Daftar game pada toko yang memenuhi kriteria: ")
+                                for i in range(count):
+                                    print(i+1, end=". ")
+                                    for j in range (6):
+                                        print(game_valid[i][j], end=" | ")
+                                    print()
+                            else:
+                                print("Tidak ada game pada toko yang memenuhi kriteria.")
+                        else:
+                            for i in range (support.f_len(inventory)):
+                                #Parameter ID, Kategori dan Tahun Rilis ada (tidak kosong)
+                                if game_id == inventory[i][0]:
+                                    if inventory[i][2] == game_category:
+                                        if inventory[i][3] == game_year:
+                                            game_valid[count] = inventory[i]
+                                            count += 1
+                            if not count==0:
+                                print("Daftar game pada toko yang memenuhi kriteria: ")
+                                for i in range(count):
+                                    print(i+1, end=". ")
+                                    for j in range (6):
+                                        print(game_valid[i][j], end=" | ")
+                                    print()
+                            else:
+                                print("Tidak ada game pada toko yang memenuhi kriteria.")
+                else:
+                    if game_category == "":
+                        if game_year == "":
+                            for i in range(support.f_len(inventory)):
+                                #Parameter ID dan Harga tidak kosong
+                                if game_id == inventory[i][0]:
+                                    if int(game_price) == inventory[i][4]:
+                                        game_valid[count] = inventory[i]
+                                        count += 1
+                            if not count == 0:
+                                print("Daftar game pada toko yang memenuhi kriteria: ")
+                                for i in range(count):
+                                    print(i+1, end=". ")
+                                    for j in range (6):
+                                        print(game_valid[i][j], end=" | ")
+                            else:
+                                print("Tidak ada game pada toko yang memenuhi kriteria.")
+                        else:
+                            for i in range (support.f_len(inventory)):
+                                #Parameter tidak kosong kecuali Nama dan Kategori
+                                if game_id == inventory[i][0]:
+                                    if inventory[i][4] == int(game_price):
+                                        if inventory[i][3] == game_year:
+                                            game_valid[count] = inventory[i]
+                                            count += 1
+                            if not count==0:
+                                print("Daftar game pada toko yang memenuhi kriteria: ")
+                                for i in range(count):
+                                    print(i+1, end=". ")
+                                    for j in range (6):
+                                        print(game_valid[i][j], end=" | ")
+                                    print()
+                            else:
+                                print("Tidak ada game pada toko yang memenuhi kriteria.")
+                    else:
+                        if game_year == "":
+                            for i in range(support.f_len(inventory)):
+                                #Parameter tidak kosong kecuali Nama dan Tahun Rilis
+                                if game_id == inventory[i][0]:
+                                    if inventory[i][4] == int(game_price):
+                                        if inventory[i][2] == game_category:
+                                            game_valid[count] = inventory[i]
+                                            count += 1
+                            if not count==0:
+                                print("Daftar game pada toko yang memenuhi kriteria: ")
+                                for i in range(count):
+                                    print(i+1, end=". ")
+                                    for j in range (6):
+                                        print(game_valid[i][j], end=" | ")
+                                    print()
+                            else:
+                                print("Tidak ada game pada toko yang memenuhi kriteria.")
+                        else:
+                            for i in range (support.f_len(inventory)):
+                                #Parameter tidak kosong kecuali Nama
+                                if game_id == inventory[i][0]:
+                                    if inventory[i][4] == int(game_price):
+                                        if inventory[i][2] == game_category:
+                                            if inventory[i][3] == game_year:
+                                                game_valid[count] = inventory[i]
+                                                count += 1
+                            if not count==0:
+                                print("Daftar game pada toko yang memenuhi kriteria: ")
+                                for i in range(count):
+                                    print(i+1, end=". ")
+                                    for j in range (6):
+                                        print(game_valid[i][j], end=" | ")
+                                    print()
+                            else:
+                                print("Tidak ada game pada toko yang memenuhi kriteria.")
+            else:
+                if game_price == "":
+                    if game_category == "":
+                        if game_year == "":
+                            #Parameter ID dan Tahun tidak kosong
+                            for i in range(support.f_len(inventory)):
+                                if game_id == inventory[i][0]:
+                                    if inventory[i][3] == game_year:
+                                        game_valid[count] = inventory[i]
+                                        count += 1
+                            if not count == 0:
+                                print("Daftar game pada toko yang memenuhi kriteria: ")
+                                for i in range(count):
+                                    print(i+1, end=". ")
+                                    for j in range (6):
+                                        print(game_valid[i][j], end=" | ")
+                            else:
+                                print("Tidak ada game pada toko yang memenuhi kriteria.")
+                        else:
+                            for i in range (support.f_len(inventory)):
+                                #Parameter ID, Nama dan Tahun Rilis tidak kosong
+                                if game_id == inventory[i][0]:
+                                    if game_title == inventory[i][1]:
+                                        if inventory[i][3] == game_year:
+                                            game_valid[count] = inventory[i]
+                                            count += 1
+                            if not count==0:
+                                print("Daftar game pada toko yang memenuhi kriteria: ")
+                                for i in range(count):
+                                    print(i+1, end=". ")
+                                    for j in range (6):
+                                        print(game_valid[i][j], end=" | ")
+                                    print()
+                            else:
+                                print("Tidak ada game pada toko yang memenuhi kriteria.")
+                    else:
+                        if game_year == "":
+                            #Parameter ID, Nama dan Kategori tidak kosong
+                            for i in range(support.f_len(inventory)):
+                                if game_id == inventory[i][0]:
+                                    if game_title == inventory[i][1]:
+                                        if inventory[i][2] == game_category:
+                                            game_valid[count] = inventory[i]
+                                            count += 1
+                            if not count==0:
+                                print("Daftar game pada toko yang memenuhi kriteria: ")
+                                for i in range(count):
+                                    print(i+1, end=". ")
+                                    for j in range (6):
+                                        print(game_valid[i][j], end=" | ")
+                                    print()
+                            else:
+                                print("Tidak ada game pada toko yang memenuhi kriteria.")
+                        else:
+                            #Parameter Harga kosong
+                            for i in range (support.f_len(inventory)):
+                                if game_id == inventory[i][0]:
+                                    if game_title == inventory[i][1]:
+                                        if inventory[i][2] == game_category:
+                                            if inventory[i][3] == game_year:
+                                                game_valid[count] = inventory[i]
+                                                count += 1
+                            if not count==0:
+                                print("Daftar game pada toko yang memenuhi kriteria: ")
+                                for i in range(count):
+                                    print(i+1, end=". ")
+                                    for j in range (6):
+                                        print(game_valid[i][j], end=" | ")
+                                    print()
+                            else:
+                                print("Tidak ada game pada toko yang memenuhi kriteria.")
+                else:
+                    if game_category == "":
+                        if game_year == "":
+                            #Parameter Kategori dan Tahun Rilis kosong
+                            for i in range(support.f_len(inventory)):
+                                if game_id == inventory[i][0]:
+                                    if game_title == inventory[i][1]:
+                                        if int(game_price) == inventory[i][4]:
+                                            game_valid[count] = inventory[i]
+                                            count += 1
+                            if not count == 0:
+                                print("Daftar game pada toko yang memenuhi kriteria: ")
+                                for i in range(count):
+                                    print(i+1, end=". ")
+                                    for j in range (6):
+                                        print(game_valid[i][j], end=" | ")
+                            else:
+                                print("Tidak ada game pada toko yang memenuhi kriteria.")
+                        else:
+                            for i in range (support.f_len(inventory)):
+                                #Parameter Kategori Kosong
+                                if game_id == inventory[i][0]:
+                                    if game_title == inventory[i][1]:
+                                        if inventory[i][4] == int(game_price):
+                                            if inventory[i][3] == game_year:
+                                                game_valid[count] = inventory[i]
+                                                count += 1
+                            if not count==0:
+                                print("Daftar game pada toko yang memenuhi kriteria: ")
+                                for i in range(count):
+                                    print(i+1, end=". ")
+                                    for j in range (6):
+                                        print(game_valid[i][j], end=" | ")
+                                    print()
+                            else:
+                                print("Tidak ada game pada toko yang memenuhi kriteria.")
+                    else:
+                        if game_year == "":
+                            #Parameter Tahun Rilis kosong
+                            for i in range(support.f_len(inventory)):
+                                if game_id == inventory[i][0]:
+                                    if game_title == inventory[i][1]:
+                                        if inventory[i][4] == int(game_price):
+                                            if inventory[i][2] == game_category:
+                                                game_valid[count] = inventory[i]
+                                                count += 1
+                            if not count == 0:
+                                print("Daftar game pada toko yang memenuhi kriteria: ")
+                                for i in range(count):
+                                    print(i+1, end=". ")
+                                    for j in range (6):
+                                        print(game_valid[i][j], end=" | ")
+                                    print()
+                            else:
+                                print("Tidak ada game pada toko yang memenuhi kriteria.")
+                            
+                        else:
+                            for i in range (support.f_len(inventory)):
+                                #Semua parameter ada (tidak kosong)
+                                if game_id == inventory[i][0]:
+                                    if game_title == inventory[i][1]:
+                                        if inventory[i][4] == int(game_price):
+                                            if inventory[i][2] == game_category:
+                                                if inventory[i][3] == game_year:
+                                                    game_valid[count] = inventory[i]
+                                                    count += 1
+                            if not count==0:
+                                print("Daftar game pada toko yang memenuhi kriteria: ")
+                                for i in range(count):
+                                    print(i+1, end=". ")
+                                    for j in range (6):
+                                        print(game_valid[i][j], end=" | ")
+                                    print()
+                            else:
+                                print("Tidak ada game pada toko yang memenuhi kriteria.")
 
 # F12 - Top Up Saldo
 def topup(user):
@@ -985,11 +1058,13 @@ def topup(user):
     else:
         # Mencari username yang telah diinput di data base
         found = False
-        for i in range(len(user)):
+        for i in range(support.f_len(user)):
             # Jika username ditemukan, akan dilakukan penambahan saldo
             if user[i][1] == username:
+                user[i][5] = int(user[i][5])
                 found = True
                 user[i][5] += saldo_tambahan
+                user[i][5] = str(user[i][5])
                 print("Top up berhasil. Saldo",username,"bertambah menjadi",user[i][5])
                 break
         # Jika username tidak ditemukan, akan menyampaikan pesan error
@@ -1006,7 +1081,7 @@ def riwayat_pembelian(riwayatgame,user,username):
         index2+=1
     j=1
     condition=False
-    for i in (riwayatgame):
+    for i in range(support.f_len(riwayatgame)):
         if riwayatgame[i][3]==user[index][0]:
             condition=True
             print (f'{j}. {riwayatgame[i][0]} | {riwayatgame[i][1]} | {riwayatgame[i][2]} | {riwayatgame[i][4]}')
@@ -1069,11 +1144,32 @@ def help(curr_role):
         """)
 
 # F15 - Load
+def load (loaded):
+    print('loading...')
+    time.sleep(2)
+    if len(sys.argv)!=1:
+        parser=argparse.ArgumentParser(usage="")
+        parser.add_argument("x")
+        args=parser.parse_args()
+        namafolder=args.x
+        if (os.path.exists(args.x)): 
+            game=support.f_open(f"{namafolder}/game.csv")
+            user=support.f_open(f"{namafolder}/user.csv")
+            riwayat=support.f_open(f"{namafolder}/riwayat.csv")
+            kepemilikan=support.f_open(f"{namafolder}/kepemilikan.csv")
+            loaded = True
+            return (loaded,game,user,riwayat,kepemilikan) 
+        else : 
+            print (f"folder {args.x} tidak ditemukan")
+            loaded = False
+            return (loaded,[],[],[],[]) 
+    else:
+        print ("Tidak ada nama folder yang diberikan!")
+        loaded = False
+        return (loaded,[],[],[],[]) 
 
 # F16 - Save
 def save(user,game,riwayat,kepemilikan):
-    import os
-    
     current_path = os.getcwd()
     path = input('Masukkan nama folder penyimpanan: ')
     if not os.path.exists(path):
@@ -1102,12 +1198,12 @@ def save(user,game,riwayat,kepemilikan):
     u.close()
     
     r = open('riwayat.csv', 'w')
-    r.write("id;username;nama;password;role;saldo\n")
+    r.write("game_id;nama;harga;user_id;tahun_beli\n")
     for i in range (support.f_len(riwayat)):
         for j in range (4):
-            r.write(str(user[i][j]))
+            r.write(str(riwayat[i][j]))
             r.write(';')
-        r.write(str(user[i][4]))
+        r.write(str(riwayat[i][4]))
         r.write('\n')
     r.close()
 
@@ -1122,6 +1218,9 @@ def save(user,game,riwayat,kepemilikan):
     k.close()
 
     os.chdir(current_path)
+    print("Saving...")
+    time.sleep(2)
+    print("Data berhasil disimpan pada", path)
 
 # F17 - Exit
 def exit_program(user, game, riwayat, kepemilikan):
@@ -1130,9 +1229,8 @@ def exit_program(user, game, riwayat, kepemilikan):
         answer = input("Apakah Anda mau melakukan penyimpanan file yang sudah diubah? (y/n) ")
     if (answer == "Y" or answer == 'y'):
         save(user,game,riwayat,kepemilikan)
-        print("Data berhasil disimpan.")
-        print("Anda telah keluar dari program.")
+        print("Terima kasih telah menggunakan Binomo!")
     else:
         print("Data tidak disimpan.")
-        print("Anda telah keluar dari program.")
+        print("Terima kasih telah menggunakan Binomo!")
     exit()
