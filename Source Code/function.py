@@ -1059,24 +1059,24 @@ def topup(user):
     username = input("Masukkan username: ")
     saldo_tambahan = int(input("Masukkan saldo: "))
 
-    # Validasi saldo tambahan
-    if saldo_tambahan < 0:
+    
+    # Mencari username yang telah diinput di data base
+    found = False
+    for i in range(len(user)):
+        # Jika username ditemukan, akan dilakukan penambahan saldo
+        if user[i][2] == username:
+            found = True
+            break
+    # Jika username tidak ditemukan, akan menyampaikan pesan error
+    if found == False:
+        print("Username",username,"tidak ditemukan.")
+         
+    # Validasi saldo tambahan (saldo akhir tidak bisa kurang dari 0)
+    if user[i][4] + saldo_tambahan < 0:
         print("Masukkan tidak valid.")
     else:
-        # Mencari username yang telah diinput di data base
-        found = False
-        for i in range(support.f_len(user)):
-            # Jika username ditemukan, akan dilakukan penambahan saldo
-            if user[i][1] == username:
-                user[i][5] = int(user[i][5])
-                found = True
-                user[i][5] += saldo_tambahan
-                user[i][5] = str(user[i][5])
-                print("Top up berhasil. Saldo",username,"bertambah menjadi",user[i][5])
-                break
-        # Jika username tidak ditemukan, akan menyampaikan pesan error
-        if found == False:
-            print("Username",username,"tidak ditemukan.")
+        user[i][4] += saldo_tambahan
+        print("Top up berhasil. Saldo",username,"bertambah menjadi",user[i][4])
 
 # F13 - Melihat riwayat pembelian
 def riwayat_pembelian(riwayatgame,user,username):
