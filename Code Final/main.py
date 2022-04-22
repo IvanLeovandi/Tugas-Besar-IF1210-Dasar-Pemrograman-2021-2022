@@ -22,19 +22,17 @@ import datetime; import time; import support ; import function
 user =[]; game = []; riwayat = []; kepemilikan = []; # temp_history = []
 user_id = ""
 
-listPerintah = ['register', 'login', 'tambah_game', 'ubah_game', 'ubah_stok', 'list_game_toko', 'buy_game', 'list_game', 
-              'list_game', 'search_my_game', 'search_game_at_store', 'topup', 'riwayat', 'save', 'exit']
+command_user = ['list_game_toko', 'buy_game', 'list_game', 'search_my_game', 'search_game_at_store', 'topup', 'riwayat', 'save', 'exit']
+command_admin = ['register', 'tambah_game', 'ubah_game', 'ubah_stok', 'list_game_toko', 'search_game_at_store', 'topup', 'save', 'exit']
              
 program = True
 hasLogin = False
 role = ""
 username = ""
 
-# Pemanggilan procedure loading()
-# directory = load()
+# Pemanggilan function load()
 loaded = False
 
-# if not(directory == None):
 if not loaded:
     loaded_file = function.load(loaded)
     loaded = loaded_file[0]
@@ -133,12 +131,14 @@ if loaded:
                 else:
                     # Masukan salah, tidak sesuai keyword yang valid, sudah login
                     print("Input anda tidak valid")
-                    print("Berikut merupakan input yang valid")
+                    print('Maaf, anda harus login terlebih dahulu untuk mengirim perintah selain “login”')
                     function.help(role)        
-            elif support.f_search(listPerintah, command):
-                # Masukan benar, tetapi belum login
-                print("Anda harus login terlebih dahulu")
-                print()
+            elif support.f_search(command_user, command):
+                # Masukan benar, tetapi belum login sebagai user
+                print("Maaf, anda harus menjadi user untuk melakukan hal tersebut.")
+            elif support.f_search(command_admin, command):
+                # Masukan benar, tetapi memasukkan command yang hanya dapat diakses oleh Admin
+                print("Maaf, anda tidak memiliki izin untuk menjalankan perintah berikut. Mintalah ke administrator untuk melakukan hal tersebut.")
             else:
                 # Masukan salah, tidak sesuai keyword yang valid, belum login
                 print("Input yang diberikan tidak tersedia")
