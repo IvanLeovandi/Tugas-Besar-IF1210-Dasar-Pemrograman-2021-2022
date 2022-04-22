@@ -84,8 +84,8 @@ def add_game(game):
     nama_game = input("Masukkan nama game: ")
     kategori = input("Masukkan kategori: ")
     tahun_rilis = input("Masukkan tahun rilis: ")
-    harga_game = input("Masukkan harga: ")
-    stok_awal = input("Masukkan stok awal: ")
+    harga_game = int(input("Masukkan harga: "))
+    stok_awal = int(input("Masukkan stok awal: "))
 
     # validasi informasi yang dimasukkan
     valid = False
