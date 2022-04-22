@@ -133,9 +133,10 @@ def list_game_toko():
                     list_game[i] = temp
         for i in range(f_len(list_game)):
             print(i+1, end=". ")
-            for j in range (6):
+            for j in range (5):
                 print(list_game[i][j], end = " | ")
-            print()
+            print(list_game[i][5])
+            
 
     #mengurutkan berdasarkan Tahun Rilis (kecil ke besar)
     elif skema == "tahun-":
@@ -148,9 +149,10 @@ def list_game_toko():
                     list_game[i] = temp
         for i in range(f_len(list_game)):
             print(i+1, end=". ")
-            for j in range (6):
+            for j in range (5):
                 print(list_game[i][j], end = " | ")
-            print()
+            print(list_game[i][5])
+            
 
     #mengurutkan berdasarkan Tahun Rilis (besar ke kecil)        
     elif skema == "tahun+":
@@ -163,9 +165,12 @@ def list_game_toko():
                     list_game[i] = temp
         for i in range(f_len(list_game)):
             print(i+1, end=". ")
-            for j in range (6):
-                print(list_game[i][j], end = " | ")
-            print()
+            for i in range(f_len(list_game)):
+                print(i+1, end=". ")
+                for j in range (5):
+                    print(list_game[i][j], end = " | ")
+            print(list_game[i][5])
+            
 
     #mengurutkan berdasarkan Harga (besar ke kecil)        
     elif skema == "harga+":
@@ -178,17 +183,18 @@ def list_game_toko():
                     list_game[i] = temp
         for i in range(f_len(list_game)):
             print(i+1, end=". ")
-            for j in range (6):
+            for j in range (5):
                 print(list_game[i][j], end = " | ")
-            print()
+            print(list_game[i][5])
+            
     elif skema == "" or skema == " ":
         for i in range(f_len(list_game)):
             print(i+1, end=". ")
-            for j in range (6):
+            for j in range (5):
                 print(list_game[i][j], end = " | ")
-            print()
+            print(list_game[i][5])
+            
         
     #input skema tidak sesuai
     else:
         print("Skema sorting tidak valid!")
-
