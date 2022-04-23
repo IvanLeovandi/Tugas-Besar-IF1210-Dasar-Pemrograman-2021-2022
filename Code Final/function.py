@@ -24,25 +24,21 @@ def register_user(user):
         # validasi karakter yang digunakan dalam username
         if not((ord(username[i]) >= 97 and ord(username[i]) <= 122) or (ord(username[i])>=65 and ord(username[i])<=90) or (ord(username[i])==45) or (ord(username[i])==95) or (ord(username[i])>=48 and ord(username[i])<=57)):
             valid = False
-            return print("Username",username,"tidak valid, silahkan gunakan username lain.")
+            print("Username",username,"tidak valid, silahkan gunakan username lain.")
     for i in range(support.f_len(user)):
         # validasi keunikan username
         if user[i][1] == username:
             valid = False
-            return print("Username",username,"sudah terpakai, silahkan gunakan username lain.")
-
-    # Membuat ID user
-    count = 0
-    for i in range(support.f_len(user)):
-        if user[i][0][0] == 'U':
-            count += 1
-    
-    id = "User" + str(count+1)
-
-    saldo = "0"
+            print("Username",username,"sudah terpakai, silahkan gunakan username lain.")
 
     # jika data sudah valid, data akan dimasukkan ke array "user"
     if valid:
+        count = 0
+        for i in range(support.f_len(user)):
+            if user[i][0][0] == "U":
+                count += 1
+        id = "User" + str(count+1)
+        saldo = "0"
         register = [id,username,nama,password,"User",saldo]
         user = support.f_append(user,register)
         print("Username",username,"telah berhasil register ke dalam Binomo")
@@ -105,24 +101,16 @@ def add_game(game):
     # Mencari tahu ID terakhir dari data yang sudah ada
     count = 0
     if (support.f_len(game)) != 0:
-        count = 1
         for i in range(support.f_len(game)):
-            if 0 < i <= 9:
-                if game[i][0] == 'GAME00'+str(i+1):
-                    count += 1
-            elif 9 < i <= 99:
-                if game[i][0] == 'GAME0'+str(i+1):
-                    count += 1
-            else:
-                if game[i][0] == 'GAME'+str(i+1):
-                    count += 1
+            if game[i][0][0] == 'G':
+                count += 1
     
     # Memberikan ID pada game
-    if 0 <= count <= 9:
+    if 0 <= count < 9:
         id_game = "GAME00" + str(count+1)
-    elif 9 < count <= 99:
+    elif 9 <= count < 99:
         id_game = "GAME0" + str(count+1)
-    elif 99 < count <= 999:
+    elif 99 <= count <= 999:
         id_game = "GAME" + str(count+1)
 
     # Menyampaikan pesan sukses dan menambahkan informasi ke dalam database game ketika data sudah valid
