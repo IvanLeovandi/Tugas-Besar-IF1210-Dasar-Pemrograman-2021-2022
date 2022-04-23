@@ -22,7 +22,7 @@ def register_user(user):
     valid = True
     for i in range(support.f_len(username)):
         # validasi karakter yang digunakan dalam username
-        if not((ord(username[i]) >= 97 and ord(username[i]) <= 122) or (ord(username[i])>=65 and ord(username[i])<=90) or (ord(username[i])==45) or (ord(username[i])==95)):
+        if not((ord(username[i]) >= 97 and ord(username[i]) <= 122) or (ord(username[i])>=65 and ord(username[i])<=90) or (ord(username[i])==45) or (ord(username[i])==95) or (ord(username[i])>=48 and ord(username[i])<=57)):
             valid = False
             return print("Username",username,"tidak valid, silahkan gunakan username lain.")
     for i in range(support.f_len(user)):
