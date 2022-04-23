@@ -106,7 +106,7 @@ def add_game(game):
                 count += 1
     
     # Memberikan ID pada game
-    if 0 < count <= 9:
+    if 0 <= count <= 9:
         id_game = "GAME00" + str(count+1)
     elif 9 < count <= 99:
         id_game = "GAME0" + str(count+1)
