@@ -1,0 +1,5 @@
+id;username;nama;password;role;saldo
+Admin1;abcd;Lord;1234;Admin;0
+Admin2;admin_ganteng_idaman;Reja;1234;Admin;0
+User1;indra_kanz;indra;1234;User;150000
+User2;doni_salaman;donay;1234;User;50000
