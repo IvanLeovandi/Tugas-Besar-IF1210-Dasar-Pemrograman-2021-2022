@@ -918,6 +918,7 @@ def help(curr_role):
     # Fungsi menampilkan perintah-perintah yang dapat digunakan pada aplikasi jika sudah login dan ada role admin
     elif curr_role == "Admin":
         print("""
+        ============ HELP ============
         1. register - Untuk melakukan registrasi user baru
         2. login - Untuk login ke dalam sistem
         3. tambah_game - Untuk menambah game yang dijual pada toko
@@ -934,6 +935,7 @@ def help(curr_role):
     # Fungsi menampilkan perintah-perintah yang dapat digunakan pada aplikasi jika sudah login dan ada role user
     elif curr_role == "User":
         print("""
+        ============ HELP ============
         1. login - Untuk login ke dalam sistem
         2. list_game_toko - Untuk menampilkan list game pada toko berdasarkan tahun atau harga
         3. buy_game - Untuk membeli game yang tersedia di toko
