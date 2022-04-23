@@ -188,7 +188,8 @@ def update_stok(role,game):
             if not found:
                 print('Tidak ada game dengan ID tersebut')
     else:
-        print('Kamu tidak memiliki akses pada menu ini')
+        print("Maaf, anda tidak memiliki izin untuk menjalankan perintah berikut.") 
+        print("Mintalah ke administrator untuk melakukan hal tersebut.")
 
 # F07 - List Game toko
 def list_game_toko(game):
@@ -379,7 +380,7 @@ def buy_game (role, user_id, saldo, game, kepemilikan, temp_history):
                     print("Tidak ada Game dengan ID tersebut")
                     return temp_history, saldo, kepemilikan
     else:
-        print("Anda tidak memiliki akses pada menu ini.")
+        print("Maaf, anda harus menjadi user untuk melakukan hal tersebut.")
         return temp_history, saldo, kepemilikan
 
 # F09 - Melihat Game yang dimiliki
@@ -413,7 +414,7 @@ def list_game(role,user_id,kepemilikan,game):
                         print(str(my_game[i][j]) + " "*(max_length-length_data),end = " | ")
             return
     else:
-        print("Anda tidak memiliki akses pada menu ini")
+        print("Maaf, anda harus menjadi user untuk melakukan hal tersebut.")
         return
 
 # F10 - Mencari Game yang dimiliki dari ID dan tahun rilis
@@ -485,7 +486,7 @@ def search_my_game(role,user_id,kepemilikan,game):
             return
 
     else:
-        print("Anda tidak memiliki akses pada menu ini")
+        print("Maaf, anda harus menjadi user untuk melakukan hal tersebut.")
         return
 
 # F11 - Mencari Game di toko
@@ -820,24 +821,29 @@ def topup(user):
     username = input("Masukkan username: ")
     saldo_tambahan = int(input("Masukkan saldo: "))
 
+    for i in range(support.f_len(user)):
+        user[i][5] = int(user[i][5])
     # Mencari username yang telah diinput di data base
     found = False
-    for i in range(len(user)):
+    for i in range(support.f_len(user)):
         # Jika username ditemukan, akan dilakukan penambahan saldo
-        if user[i][2] == username:
+        if user[i][1] == username:
             found = True
             break
     # Jika username tidak ditemukan, akan menyampaikan pesan error
     if found == False:
         print("Username",username,"tidak ditemukan.")
-         
+    else:     
     # Validasi saldo tambahan (saldo akhir tidak bisa kurang dari 0)
-    if user[i][4] + saldo_tambahan < 0:
-        print("Masukkan tidak valid.")
-    else:
-        user[i][4] += saldo_tambahan
-        print("Top up berhasil. Saldo",username,"bertambah menjadi",user[i][4])
-
+        if user[i][5] + saldo_tambahan < 0:
+            print("Masukkan tidak valid.")
+        else:
+            if saldo_tambahan >= 0 :
+                user[i][5] += saldo_tambahan
+                print("Top up berhasil. Saldo",username,"bertambah menjadi",user[i][5])
+            else:
+                user[i][5] += saldo_tambahan
+                print("Top up berhasil. Saldo",username,"berkurang menjadi",user[i][5])
 
 # F13 - Melihat riwayat pembelian
 def riwayat_pembelian(riwayatgame,user,username):
@@ -925,7 +931,7 @@ def help(curr_role):
 
 # F15 - Load
 def load (loaded):
-    print('loading...')
+    print('Loading...')
     time.sleep(2)
     if len(sys.argv)!=1:
         parser=argparse.ArgumentParser(usage="")
