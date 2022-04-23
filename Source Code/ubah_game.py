@@ -1,6 +1,3 @@
-from socket import J1939_NLA_BYTES_ACKED
-
-
 def ubah_game (datagame):
     id_game=input('Masukkan ID game: ')
     index=0
