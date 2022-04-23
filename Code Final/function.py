@@ -106,11 +106,11 @@ def add_game(game):
                 count += 1
     
     # Memberikan ID pada game
-    if 0 <= count < 9:
+    if 0 < count <= 9:
         id_game = "GAME00" + str(count+1)
-    elif 9 <= count < 99:
+    elif 9 < count <= 99:
         id_game = "GAME0" + str(count+1)
-    elif 99 <= count <= 999:
+    elif 99 < count <= 999:
         id_game = "GAME" + str(count+1)
 
     # Menyampaikan pesan sukses dan menambahkan informasi ke dalam database game ketika data sudah valid
