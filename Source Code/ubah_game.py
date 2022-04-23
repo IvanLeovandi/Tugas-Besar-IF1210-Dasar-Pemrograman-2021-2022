@@ -13,12 +13,14 @@ def ubah_game (datagame):
     kategori=input('Masukkan kategori: ')
     tahun_rilis=input('Masukkan tahun rilis: ')
     harga_game=input('Masukkan harga: ')
-    j=1
-    for i in (nama_game,kategori,tahun_rilis,harga_game): 
-        if i != '':
-            datagame[index][j]=i 
-        j+=1
-
+    if index==0 : 
+        print('Maaf game tidak ditemukan')
+    else : 
+        j=1
+        for i in (nama_game,kategori,tahun_rilis,harga_game): 
+            if i != '':
+                datagame[index][j]=i 
+            j+=1
 
 
 
