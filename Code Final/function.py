@@ -434,9 +434,9 @@ def list_game(role,user_id,kepemilikan,game):
             arr_length_max = support.max_length(my_game)
             print("Daftar game:")
             for i in range(support.f_len(my_game)):
-                if (i < 9):
+                if (i <= 9):
                     print(i+1, end=".   ")
-                elif(9 <= i < 99):
+                elif(9 < i <= 99):
                     print(i+1, end=".  ")
                 else:
                     print(i+1, end=". ")
