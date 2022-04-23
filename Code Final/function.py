@@ -137,6 +137,8 @@ def ubah_game (game):
 
     if game == []:
         print("Data game pada toko kosong, silahkan minta Admin untuk menambahkan Game pada toko.")
+    elif index == 0:
+        print("Maaf, game tidak ditemukan.")
     else:
         j=1
         for i in (nama_game,kategori,tahun_rilis,harga_game): 
@@ -153,6 +155,7 @@ def update_stok(role,game):
     # id_game = str
     # jumlah = int
     # line = array of data_game
+    # found = boolean
 
     # ALGORITMA
     if role == 'Admin':
@@ -360,9 +363,12 @@ def buy_game (role, user_id, saldo, game, kepemilikan, temp_history):
     # fungsi yang digunakan oleh User untuk membeli game pada toko
 
     # KAMUS LOKAL
+    # id_game = string
+    # new_saldo = int
     # found = bool
     # line = array of data_history, array of data_kepemilikan
-    # new_saldo = int
+    # temp_history = array of data_history
+    # kepemilikan = array of data_kepemilikan
 
     # ALGORITMA
     date = datetime.datetime.now()
@@ -457,6 +463,16 @@ def list_game(role,user_id,kepemilikan,game):
 
 # F10 - Mencari Game yang dimiliki dari ID dan tahun rilis
 def search_my_game(role,user_id,kepemilikan,game):
+    # fungsi yang digunakan user untuk mencari game yang dimiliki berdasarkan ID game dan tahun rilis
+    
+    # KAMUS LOKAL
+    # type data_my_game = <game_id:string, nama:string, harga:string, kategori:string, tahun rilis:string>
+    # game_id, tahun_rilis = str
+    # count, i, j, max_length, length_data = int
+    # line = array of data_kepemilikan, array of data_game
+    # owned_game_id = array of string
+    # my_game = array of data_my_game
+
     if role == "User":
         game_id = input("Masukkan ID Game: ")
         tahun_rilis = input("Masukkan Tahun Rilis Game: ")
@@ -512,7 +528,6 @@ def search_my_game(role,user_id,kepemilikan,game):
             else:
                 
                 arr_length_max = support.max_length(my_game)
-                print("Daftar game:")
                 for i in range(support.f_len(my_game)):
                     if (i < 9):
                         print(i+1, end=".   ")
@@ -1029,6 +1044,12 @@ def save(user,game,riwayat,kepemilikan):
 
 # F17 - Exit
 def exit_program(user, game, riwayat, kepemilikan):
+    # fungsi yang digunakan pengguna untuk keluar dari sistem
+    # fungsi akan meminta masukan berupa pilihan untuk melakukan perubahan atau tidak
+
+    # KAMUS LOKAL
+    # answer = str
+    # save(path:string, user:array of data_user, game:array of data_game, riwayat:array of data_history, kepemilikan: array of data_kepemilikan)
     answer = input("Apakah Anda mau melakukan penyimpanan file yang sudah diubah? (y/n) ")
     while (answer != "y" and answer != "Y" and answer != "n" and answer != "N"):
         answer = input("Apakah Anda mau melakukan penyimpanan file yang sudah diubah? (y/n) ")
