@@ -225,10 +225,10 @@ def list_game_toko(game):
                 if int(array[i][4]) < int(hasil):
                     hasil = array[i][4]
         elif skema == "" or skema == " ":
-            hasil = list_game[x][0]
-            for i in range (x, f_len(array)):
-                if get_id(array[i][0]) < (get_id(hasil)):
-                    hasil = array[i][0]
+                hasil = list_game[x][0]
+                for i in range (x, support.f_len(array)):
+                    if get_id(array[i][0]) < (get_id(hasil)):
+                        hasil = array[i][0]
         return hasil
 
     def get_id (game_id):
@@ -318,13 +318,12 @@ def list_game_toko(game):
                 
         elif skema == "" or skema == " ":
             temp = 0
-            for i in range (f_len(list_game)):
-                for j in range (i, f_len(list_game)):
+            for i in range (support.f_len(list_game)):
+                for j in range (i, support.f_len(list_game)):
                     if list_game[j][0] == min(list_game, skema, i):
                         temp = list_game[j]
                         list_game[j] = list_game[i]
                         list_game[i] = temp
-            
             arr_length_max = support.max_length(list_game)
             for i in range(support.f_len(list_game)):
                 print(i+1, end=". ")
@@ -381,7 +380,7 @@ def buy_game (role, user_id, saldo, game, kepemilikan, temp_history):
                                 print("Game", line[1], "berhasil dibeli!")
                                 line[5] = line[5] - 1
                                 line[5] = str(line[5])
-                                temp_history = support.f_append(temp_history,[line[0],line[1],line[4],user_id,date.year])
+                                temp_history = support.f_append(temp_history,[line[0],line[1],line[4],user_id,str(date.year)])
                                 kepemilikan = support.f_append(kepemilikan, [line[0],user_id])
                                 return temp_history, new_saldo, kepemilikan
                             else:
@@ -880,6 +879,7 @@ def riwayat_pembelian(riwayatgame,user,username):
     if condition==False:
         print('Maaf, kamu tidak ada riwayat pembelian game. Ketik perintah buy_game untuk membeli.')
     else:
+        print("Daftar game:")
         arr_length_max = support.max_length(show_riwayat)
         for i in range(support.f_len(show_riwayat)):
             print(i+1, end=". ")
