@@ -106,11 +106,11 @@ def add_game(game):
                 count += 1
     
     # Memberikan ID pada game
-    if 0 <= count <= 9:
+    if 0 <= count < 9:
         id_game = "GAME00" + str(count+1)
-    elif 9 < count <= 99:
+    elif 9 <= count < 99:
         id_game = "GAME0" + str(count+1)
-    elif 99 < count <= 999:
+    elif 99 <= count <= 999:
         id_game = "GAME" + str(count+1)
 
     # Menyampaikan pesan sukses dan menambahkan informasi ke dalam database game ketika data sudah valid
@@ -170,7 +170,10 @@ def update_stok(role,game):
                         line[5] = int(line[5])
                         line[5] += jumlah
                         line[5] = str(line[5])
-                        print('Stok game', line[1], 'berhasil ditambahkan. Stok sekarang:', line[5])
+                        if jumlah >= 0:
+                            print('Stok game', line[1], 'berhasil ditambahkan. Stok sekarang:', line[5])
+                        else:
+                            print('Stok game', line[1], 'berhasil dikurangi. Stok sekarang:', line[5])
                     else:
                         print('Stok game', line[1], 'gagal dikurangi karena stok kurang. Stok sekarang:', line[5])
             if not found:
@@ -434,9 +437,9 @@ def list_game(role,user_id,kepemilikan,game):
             arr_length_max = support.max_length(my_game)
             print("Daftar game:")
             for i in range(support.f_len(my_game)):
-                if (i <= 9):
+                if (i < 9):
                     print(i+1, end=".   ")
-                elif(9 < i <= 99):
+                elif(9 <= i < 99):
                     print(i+1, end=".  ")
                 else:
                     print(i+1, end=". ")
