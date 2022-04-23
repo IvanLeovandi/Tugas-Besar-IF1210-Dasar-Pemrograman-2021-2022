@@ -13,7 +13,7 @@ def riwayat_pembelian(riwayatgame,user,username):
             print (f'{j}. {riwayatgame[i][0]} | {riwayatgame[i][1]} | {riwayatgame[i][2]} | {riwayatgame[i][4]}')
             j+=1
     if condition==False:
-        print('Maaf')
+        print('Maaf, kamu tidak ada riwayat pembelian game. Ketik perintah beli_game untuk membeli.')
     
             
             
