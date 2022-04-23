@@ -224,8 +224,16 @@ def list_game_toko(game):
             for i in range (x, support.f_len(array)):
                 if int(array[i][4]) < int(hasil):
                     hasil = array[i][4]
+        elif skema == "" or skema == " ":
+            hasil = list_game[x][0]
+            for i in range (x, f_len(array)):
+                if get_id(array[i][0]) < (get_id(hasil)):
+                    hasil = array[i][0]
         return hasil
 
+    def get_id (game_id):
+        hasil = game_id[4]*100 + game_id[5]*10 + game_id[6]
+        return hasil
 
     list_game = game
     skema = input("Skema sorting : ")
@@ -309,6 +317,14 @@ def list_game_toko(game):
                 print(list_game[i][5])
                 
         elif skema == "" or skema == " ":
+            temp = 0
+            for i in range (f_len(list_game)):
+                for j in range (i, f_len(list_game)):
+                    if list_game[j][0] == min(list_game, skema, i):
+                        temp = list_game[j]
+                        list_game[j] = list_game[i]
+                        list_game[i] = temp
+            
             arr_length_max = support.max_length(list_game)
             for i in range(support.f_len(list_game)):
                 print(i+1, end=". ")
