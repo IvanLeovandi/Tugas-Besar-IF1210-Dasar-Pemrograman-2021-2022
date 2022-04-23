@@ -238,9 +238,15 @@ def list_game_toko(game):
                         list_game[j] = list_game[i]
                         list_game[i] = temp
             
+
             arr_length_max = support.max_length(list_game)
             for i in range(support.f_len(list_game)):
-                print(i+1, end=". ")
+                if (i < 9):
+                    print(i+1, end=".   ")
+                elif(9 <= i < 99):
+                    print(i+1, end=".  ")
+                else:
+                    print(i+1, end=". ")
                 for j in range (5):
                     max_length = arr_length_max[j]
                     length_data = support.f_len(list_game[i][j])
@@ -259,7 +265,12 @@ def list_game_toko(game):
             
             arr_length_max = support.max_length(list_game)
             for i in range(support.f_len(list_game)):
-                print(i+1, end=". ")
+                if (i < 9):
+                    print(i+1, end=".   ")
+                elif(9 <= i < 99):
+                    print(i+1, end=".  ")
+                else:
+                    print(i+1, end=". ")
                 for j in range (5):
                     max_length = arr_length_max[j]
                     length_data = support.f_len(list_game[i][j])
@@ -278,7 +289,12 @@ def list_game_toko(game):
 
             arr_length_max = support.max_length(list_game)
             for i in range(support.f_len(list_game)):
-                print(i+1, end=". ")
+                if (i < 9):
+                    print(i+1, end=".   ")
+                elif(9 <= i < 99):
+                    print(i+1, end=".  ")
+                else:
+                    print(i+1, end=". ")
                 for j in range (5):
                     max_length = arr_length_max[j]
                     length_data = support.f_len(list_game[i][j])
@@ -297,7 +313,12 @@ def list_game_toko(game):
 
             arr_length_max = support.max_length(list_game)
             for i in range(support.f_len(list_game)):
-                print(i+1, end=". ")
+                if (i < 9):
+                    print(i+1, end=".   ")
+                elif(9 <= i < 99):
+                    print(i+1, end=".  ")
+                else:
+                    print(i+1, end=". ")
                 for j in range (5):
                     max_length = arr_length_max[j]
                     length_data = support.f_len(list_game[i][j])
@@ -312,9 +333,15 @@ def list_game_toko(game):
                         temp = list_game[j]
                         list_game[j] = list_game[i]
                         list_game[i] = temp
+
             arr_length_max = support.max_length(list_game)
             for i in range(support.f_len(list_game)):
-                print(i+1, end=". ")
+                if (i < 9):
+                    print(i+1, end=".   ")
+                elif(9 <= i < 99):
+                    print(i+1, end=".  ")
+                else:
+                    print(i+1, end=". ")
                 for j in range (5):
                     max_length = arr_length_max[j]
                     length_data = support.f_len(list_game[i][j])
@@ -407,7 +434,12 @@ def list_game(role,user_id,kepemilikan,game):
             arr_length_max = support.max_length(my_game)
             print("Daftar game:")
             for i in range(support.f_len(my_game)):
-                print(i+1, end=". ")
+                if (i < 9):
+                    print(i+1, end=".   ")
+                elif(9 <= i < 99):
+                    print(i+1, end=".  ")
+                else:
+                    print(i+1, end=". ")
                 for j in range(support.f_len(my_game[0])):
                     max_length = arr_length_max[j]
                     length_data = support.f_len(my_game[i][j])
@@ -475,10 +507,16 @@ def search_my_game(role,user_id,kepemilikan,game):
             if count == 0:
                 print("Tidak ada game pada inventory-mu yang memenuhi kriteria")
             else:
+                
                 arr_length_max = support.max_length(my_game)
                 print("Daftar game:")
                 for i in range(support.f_len(my_game)):
-                    print(i+1, end=". ")
+                    if (i < 9):
+                        print(i+1, end=".   ")
+                    elif(9 <= i < 99):
+                        print(i+1, end=".  ")
+                    else:
+                        print(i+1, end=". ")
                     for j in range(support.f_len(my_game[0])):
                         max_length = arr_length_max[j]
                         length_data = support.f_len(my_game[i][j])
@@ -760,7 +798,12 @@ def search_game_at_store(game):
         print("Daftar game pada toko yang memenuhi kriteria: ")
         arr_length_max = support.max_length(game_valid)
         for i in range(support.f_len(game_valid)):
-            print(i+1, end=". ")
+            if (i < 9):
+                print(i+1, end=".   ")
+            elif(9 <= i < 99):
+                print(i+1, end=".  ")
+            else:
+                print(i+1, end=". ")
             for j in range (5):
                 max_length = arr_length_max[j]
                 length_data = support.f_len(game_valid[i][j])
@@ -833,7 +876,12 @@ def riwayat_pembelian(riwayatgame,user,username):
         print("Daftar game:")
         arr_length_max = support.max_length(show_riwayat)
         for i in range(support.f_len(show_riwayat)):
-            print(i+1, end=". ")
+            if (i < 9):
+                print(i+1, end=".   ")
+            elif(9 <= i < 99):
+                print(i+1, end=".  ")
+            else:
+                print(i+1, end=". ")
             for j in range(support.f_len(show_riwayat[0])):
                 max_length = arr_length_max[j]
                 length_data = support.f_len(show_riwayat[i][j])
