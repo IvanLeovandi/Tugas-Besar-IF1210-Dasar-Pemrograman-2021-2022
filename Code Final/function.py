@@ -43,7 +43,7 @@ def register_user(user):
 
     # jika data sudah valid, data akan dimasukkan ke array "user"
     if valid:
-        register = [[id,username,nama,password,"User",saldo]]
+        register = [id,username,nama,password,"User",saldo]
         user = support.f_append(user,register)
         print("Username",username,"telah berhasil register ke dalam Binomo")
     return user
@@ -128,7 +128,7 @@ def add_game(game):
     # Menyampaikan pesan sukses dan menambahkan informasi ke dalam database game ketika data sudah valid
     if valid:
         print("Selamat! Berhasil menambahkan game",nama_game+".")
-        add_game = [[id_game,nama_game,kategori,tahun_rilis,harga_game,stok_awal]]
+        add_game = [id_game,nama_game,kategori,tahun_rilis,harga_game,stok_awal]
         game = support.f_append(game,add_game)
         return game
 
