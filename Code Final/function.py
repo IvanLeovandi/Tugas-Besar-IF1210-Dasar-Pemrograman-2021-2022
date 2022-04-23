@@ -414,7 +414,7 @@ def list_game(role,user_id,kepemilikan,game):
             for i in range(support.f_len(owned_game_id)):
                 for line in game:
                     if line[0] == owned_game_id[i]:
-                        my_game = support.f_append(my_game,[line[0],line[1],line[4],line[2],line[3]]) # menyimpan data game yang dimiliki pada variabel my_game
+                        my_game = support.f_append(my_game,[line[0],line[1],line[2],line[3],line[4]]) # menyimpan data game yang dimiliki pada variabel my_game
             
             arr_length_max = support.max_length(my_game)
             print("Daftar game:")
@@ -523,8 +523,7 @@ def search_game_at_store(game):
     game_price = input("Masukkan Harga Game: ")
     game_category = input("Masukkan kategori game: ")
     game_year = input("Masukkan Tahun Rilis Game: ")
-    count = 0
-    game_valid = ["*" for i in range (support.f_len(inventory))]
+    game_valid = []
 
     if game == []:
         print("Data game pada toko kosong, silahkan minta Admin untuk menambahkan Game pada toko.")
@@ -535,65 +534,51 @@ def search_game_at_store(game):
                     if game_category == "":
                         if game_year == "":
                             #Semua parameter kosong
-                            arr_length_max = support.max_length(inventory)
-                            for i in range(support.f_len(inventory)):
-                                print(i+1, end=". ")
-                                for j in range (5):
-                                    max_length = arr_length_max[j]
-                                    length_data = support.f_len(inventory[i][j])
-                                    print(str(inventory[i][j]) + " "*(max_length-length_data), end = " | ")
-                                print(inventory[i][5])
+                            game_valid = inventory
                         else:
                             #Semua paramater kosong kecuali Tahun Rilis
                             for i in range (support.f_len(inventory)):
                                 if inventory[i][3] == game_year:
-                                    game_valid[count] = inventory[i]
-                                    count += 1
+                                    game_valid = support.f_append(game_valid,inventory[i])
                     else:
                         #Semua parameter kosong kecuali Kategori
                         if game_year == "":
                             for i in range(support.f_len(inventory)):
                                 if inventory[i][2] == game_category:
-                                    game_valid[count] = inventory[i]
-                                    count += 1
+                                    game_valid = support.f_append(game_valid,inventory[i])
                         else:
                             #Parameter Tahun Rilis dan Kategori ada (tidak kosong)
                             for i in range (support.f_len(inventory)):
                                 if inventory[i][2] == game_category:
                                     if inventory[i][3] == game_year:
-                                        game_valid[count] = inventory[i]
-                                        count += 1
+                                        game_valid = support.f_append(game_valid,inventory[i])
                 else:
                     if game_category == "":
                         if game_year == "":
                             #Semua parameter kosong kecuali Harga
                             for i in range(support.f_len(inventory)):
-                                if int(game_price) == inventory[i][4]:
-                                    game_valid[count] = inventory[i]
-                                    count += 1
+                                if game_price == inventory[i][4]:
+                                    game_valid = support.f_append(game_valid,inventory[i])
                         else:
                             #Parameter Harga dan Tahun Rilis ada (tidak kosong)
                             for i in range (support.f_len(inventory)):
-                                if inventory[i][4] == int(game_price):
+                                if inventory[i][4] == game_price:
                                     if inventory[i][3] == game_year:
-                                        game_valid[count] = inventory[i]
-                                        count += 1
+                                        game_valid = support.f_append(game_valid,inventory[i])
                     else:
                         if game_year == "":
                             #Parameter Harga dan Kategori ada (tidak kosong)
                             for i in range(support.f_len(inventory)):
-                                if inventory[i][4] == int(game_price):
+                                if inventory[i][4] == game_price:
                                     if inventory[i][2] == game_category:
-                                        game_valid[count] = inventory[i]
-                                        count += 1
+                                        game_valid = support.f_append(game_valid,inventory[i])
                         else:
                             for i in range (support.f_len(inventory)):
                                 #Parameter Harga, Kategori dan Tahun Rilis ada (tidak kosong)
-                                if inventory[i][4] == int(game_price):
+                                if inventory[i][4] == game_price:
                                     if inventory[i][2] == game_category:
                                         if inventory[i][3] == game_year:
-                                            game_valid[count] = inventory[i]
-                                            count += 1
+                                            game_valid = support.f_append(game_valid,inventory[i])
             else:
                 if game_price == "":
                     if game_category == "":
@@ -601,66 +586,58 @@ def search_game_at_store(game):
                             #Semua parameter kosong kecuali Nama
                             for i in range(support.f_len(inventory)):
                                 if game_title == inventory[i][1]:
-                                    game_valid[count] = inventory[i]
-                                    count += 1
+                                    game_valid = support.f_append(game_valid,inventory[i])
                         else:
                             #Parameter Nama dan Tahun Rilis ada (tidak kosong)
                             for i in range (support.f_len(inventory)):
                                 if game_title == inventory[i][1]:
                                     if inventory[i][3] == game_year:
-                                        game_valid[count] = inventory[i]
-                                        count += 1
+                                        game_valid = support.f_append(game_valid,inventory[i])
                     else:
                         if game_year == "":
                             #Parameter Nama dan Kategori ada (tidak kosong)
                             for i in range(support.f_len(inventory)):
                                 if game_title == inventory[i][1]:
                                     if inventory[i][2] == game_category:
-                                        game_valid[count] = inventory[i]
-                                        count += 1
+                                        game_valid = support.f_append(game_valid,inventory[i])
                         else:
                             #Parameter Nama, Kategori dan Tahun Rilis ada (tidak kosong)
                             for i in range (support.f_len(inventory)):
                                 if game_title == inventory[i][1]:
                                     if inventory[i][2] == game_category:
                                         if inventory[i][3] == game_year:
-                                            game_valid[count] = inventory[i]
-                                            count += 1
+                                            game_valid = support.f_append(game_valid,inventory[i])
                 else:
                     if game_category == "":
                         if game_year == "":
                             #Parameter Nama dan Harga ada (tidak kosong)
                             for i in range(support.f_len(inventory)):
                                 if game_title == inventory[i][1]:
-                                    if int(game_price) == inventory[i][4]:
-                                        game_valid[count] = inventory[i]
-                                        count += 1
+                                    if game_price == inventory[i][4]:
+                                        game_valid = support.f_append(game_valid,inventory[i])
                         else:
                             for i in range (support.f_len(inventory)):
                                 #Parameter Nama, Harga dan Tahun ada (tidak kosong)
                                 if game_title == inventory[i][1]:
-                                    if inventory[i][4] == int(game_price):
+                                    if inventory[i][4] == game_price:
                                         if inventory[i][3] == game_year:
-                                            game_valid[count] = inventory[i]
-                                            count += 1
+                                            game_valid = support.f_append(game_valid,inventory[i])
                     else:
                         if game_year == "":
                             for i in range(support.f_len(inventory)):
                                 #Parameter Nama, Harga dan Kategori ada (tidak kosong)
                                 if game_title == inventory[i][1]:
-                                    if inventory[i][4] == int(game_price):
+                                    if inventory[i][4] == game_price:
                                         if inventory[i][2] == game_category:
-                                            game_valid[count] = inventory[i]
-                                            count += 1
+                                            game_valid = support.f_append(game_valid,inventory[i])
                         else:
                             for i in range (support.f_len(inventory)):
                                 #Semua Parameter ada (tidak kosong) kecuali ID
                                 if game_title == inventory[i][1]:
-                                    if inventory[i][4] == int(game_price):
+                                    if inventory[i][4] == game_price:
                                         if inventory[i][2] == game_category:
                                             if inventory[i][3] == game_year:
-                                                game_valid[count] = inventory[i]
-                                                count += 1
+                                                game_valid = support.f_append(game_valid,inventory[i])
         else:
             if game_title == "":
                 if game_price == "":
@@ -669,66 +646,58 @@ def search_game_at_store(game):
                             for i in range(support.f_len(inventory)):
                                 #Semua parameter kosong kecuali ID
                                 if game_id == inventory[i][0]:
-                                    game_valid[count] = inventory[i]
-                                    count += 1
+                                    game_valid = support.f_append(game_valid,inventory[i])
                         else:
                             for i in range (support.f_len(inventory)):
                                 #Parameter ID dan Tahun Rilis ada (tidak kosong)
                                 if game_id == inventory[i][0]:
                                     if inventory[i][3] == game_year:
-                                        game_valid[count] = inventory[i]
-                                        count += 1
+                                        game_valid = support.f_append(game_valid,inventory[i])
                     else:
                         if game_year == "":
                             for i in range(support.f_len(inventory)):
                                 #Parameter ID dan Kategori ada (tidak kosong)
                                 if game_id == inventory[i][0]:
                                     if inventory[i][2] == game_category:
-                                        game_valid[count] = inventory[i]
-                                        count += 1
+                                        game_valid = support.f_append(game_valid,inventory[i])
                         else:
                             for i in range (support.f_len(inventory)):
                                 #Parameter ID, Kategori dan Tahun Rilis ada (tidak kosong)
                                 if game_id == inventory[i][0]:
                                     if inventory[i][2] == game_category:
                                         if inventory[i][3] == game_year:
-                                            game_valid[count] = inventory[i]
-                                            count += 1
+                                            game_valid = support.f_append(game_valid,inventory[i])
                 else:
                     if game_category == "":
                         if game_year == "":
                             for i in range(support.f_len(inventory)):
                                 #Parameter ID dan Harga tidak kosong
                                 if game_id == inventory[i][0]:
-                                    if int(game_price) == inventory[i][4]:
-                                        game_valid[count] = inventory[i]
-                                        count += 1
+                                    if game_price == inventory[i][4]:
+                                        game_valid = support.f_append(game_valid,inventory[i])
                         else:
                             for i in range (support.f_len(inventory)):
                                 #Parameter tidak kosong kecuali Nama dan Kategori
                                 if game_id == inventory[i][0]:
-                                    if inventory[i][4] == int(game_price):
+                                    if inventory[i][4] == game_price:
                                         if inventory[i][3] == game_year:
-                                            game_valid[count] = inventory[i]
-                                            count += 1
+                                            game_valid = support.f_append(game_valid,inventory[i])
                     else:
                         if game_year == "":
                             for i in range(support.f_len(inventory)):
                                 #Parameter tidak kosong kecuali Nama dan Tahun Rilis
                                 if game_id == inventory[i][0]:
-                                    if inventory[i][4] == int(game_price):
+                                    if inventory[i][4] == game_price:
                                         if inventory[i][2] == game_category:
-                                            game_valid[count] = inventory[i]
-                                            count += 1
+                                            game_valid = support.f_append(game_valid,inventory[i])
                         else:
                             for i in range (support.f_len(inventory)):
                                 #Parameter tidak kosong kecuali Nama
                                 if game_id == inventory[i][0]:
-                                    if inventory[i][4] == int(game_price):
+                                    if inventory[i][4] == game_price:
                                         if inventory[i][2] == game_category:
                                             if inventory[i][3] == game_year:
-                                                game_valid[count] = inventory[i]
-                                                count += 1
+                                                game_valid = support.f_append(game_valid,inventory[i])
             else:
                 if game_price == "":
                     if game_category == "":
@@ -737,16 +706,14 @@ def search_game_at_store(game):
                             for i in range(support.f_len(inventory)):
                                 if game_id == inventory[i][0]:
                                     if inventory[i][3] == game_year:
-                                        game_valid[count] = inventory[i]
-                                        count += 1
+                                        game_valid = support.f_append(game_valid,inventory[i])
                         else:
                             for i in range (support.f_len(inventory)):
                                 #Parameter ID, Nama dan Tahun Rilis tidak kosong
                                 if game_id == inventory[i][0]:
                                     if game_title == inventory[i][1]:
                                         if inventory[i][3] == game_year:
-                                            game_valid[count] = inventory[i]
-                                            count += 1
+                                            game_valid = support.f_append(game_valid,inventory[i])
                     else:
                         if game_year == "":
                             #Parameter ID, Nama dan Kategori tidak kosong
@@ -754,8 +721,7 @@ def search_game_at_store(game):
                                 if game_id == inventory[i][0]:
                                     if game_title == inventory[i][1]:
                                         if inventory[i][2] == game_category:
-                                            game_valid[count] = inventory[i]
-                                            count += 1
+                                            game_valid = support.f_append(game_valid,inventory[i])
                         else:
                             #Parameter Harga kosong
                             for i in range (support.f_len(inventory)):
@@ -763,8 +729,7 @@ def search_game_at_store(game):
                                     if game_title == inventory[i][1]:
                                         if inventory[i][2] == game_category:
                                             if inventory[i][3] == game_year:
-                                                game_valid[count] = inventory[i]
-                                                count += 1
+                                                game_valid = support.f_append(game_valid,inventory[i])
                 else:
                     if game_category == "":
                         if game_year == "":
@@ -772,43 +737,41 @@ def search_game_at_store(game):
                             for i in range(support.f_len(inventory)):
                                 if game_id == inventory[i][0]:
                                     if game_title == inventory[i][1]:
-                                        if int(game_price) == inventory[i][4]:
-                                            game_valid[count] = inventory[i]
-                                            count += 1
+                                        if game_price == inventory[i][4]:
+                                            game_valid = support.f_append(game_valid,inventory[i])
                         else:
                             for i in range (support.f_len(inventory)):
                                 #Parameter Kategori Kosong
                                 if game_id == inventory[i][0]:
                                     if game_title == inventory[i][1]:
-                                        if inventory[i][4] == int(game_price):
+                                        if inventory[i][4] == game_price:
                                             if inventory[i][3] == game_year:
-                                                game_valid[count] = inventory[i]
-                                                count += 1
+                                                game_valid = support.f_append(game_valid,inventory[i])
                     else:
                         if game_year == "":
                             #Parameter Tahun Rilis kosong
                             for i in range(support.f_len(inventory)):
                                 if game_id == inventory[i][0]:
                                     if game_title == inventory[i][1]:
-                                        if inventory[i][4] == int(game_price):
+                                        if inventory[i][4] == game_price:
                                             if inventory[i][2] == game_category:
-                                                game_valid[count] = inventory[i]
-                                                count += 1
+                                                game_valid = support.f_append(game_valid,inventory[i])
                             
                         else:
                             for i in range (support.f_len(inventory)):
                                 #Semua parameter ada (tidak kosong)
                                 if game_id == inventory[i][0]:
                                     if game_title == inventory[i][1]:
-                                        if inventory[i][4] == int(game_price):
+                                        if inventory[i][4] == game_price:
                                             if inventory[i][2] == game_category:
                                                 if inventory[i][3] == game_year:
-                                                    game_valid[count] = inventory[i]
-                                                    count += 1
-    if not count==0:
+                                                    game_valid = support.f_append(game_valid,inventory[i])
+    
+    print(game_valid)
+    if support.f_len(game_valid) != 0:
         print("Daftar game pada toko yang memenuhi kriteria: ")
         arr_length_max = support.max_length(game_valid)
-        for i in range(count):
+        for i in range(support.f_len(game_valid)):
             print(i+1, end=". ")
             for j in range (5):
                 max_length = arr_length_max[j]
