@@ -793,7 +793,6 @@ def search_game_at_store(game):
                                                 if inventory[i][3] == game_year:
                                                     game_valid = support.f_append(game_valid,inventory[i])
     
-    print(game_valid)
     if support.f_len(game_valid) != 0:
         print("Daftar game pada toko yang memenuhi kriteria: ")
         arr_length_max = support.max_length(game_valid)
