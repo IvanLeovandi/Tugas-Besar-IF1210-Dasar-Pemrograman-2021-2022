@@ -5,13 +5,13 @@ import datetime; import time; import support ; import function
 # KAMUS GLOBAL
 # type data_user : <id:string, username:string, nama:string, password:string, role:string, saldo:integer>
 # type data_game : <id:string, nama:string, kategori:string, tahun_rilis:string, harga:integer, stok:integer>
-# type history : <id_game:string, nama:string, harga:integer, user_id:string, tahun_beli:string>
+# type data_history : <id_game:string, nama:string, harga:integer, user_id:string, tahun_beli:string>
 # type data_kepemilikan : <id_game:string, user_id:string>
 # list_command : array of string
 
 # user : array of data_user
 # game : array of data_game 
-# riwayat : array of history
+# riwayat : array of data_history
 # kepemilikan : array of data_kepemilikan
 
 # INISIALISASI
