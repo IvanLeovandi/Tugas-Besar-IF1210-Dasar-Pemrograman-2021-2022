@@ -138,7 +138,7 @@ def ubah_game (game):
 
     # ALGORITMA
     id_game=input('Masukkan ID game: ')
-    index=0
+    index=-1
     index2=0
     for i in (game):
         if id_game==i[0]:
@@ -151,7 +151,7 @@ def ubah_game (game):
 
     if game == []:
         print("Data game pada toko kosong, silahkan minta Admin untuk menambahkan Game pada toko.")
-    elif index == 0:
+    elif index == -1:
         print("Maaf, game tidak ditemukan.")
     else:
         j=1
