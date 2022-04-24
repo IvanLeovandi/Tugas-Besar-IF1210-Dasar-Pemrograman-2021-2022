@@ -101,7 +101,7 @@ if loaded:
                 elif command == "topup":
                     if role == "Admin":
                         function.topup(user)
-                        # asumsi admin tidak akan mengisi saldo sesama admin
+                        # Asumsi admin tidak akan mengisi saldo sesama admin
                     else:
                         print("Maaf, anda tidak memiliki izin untuk menjalankan perintah berikut.") 
                         print("Mintalah ke administrator untuk melakukan hal tersebut.")
@@ -110,8 +110,6 @@ if loaded:
                         function.riwayat_pembelian(riwayat,user,username) # antara pake riwayat.csv atau variabel temp_history
                     else:
                         print("Maaf, anda harus menjadi user untuk melakukan hal tersebut.")
-                elif command == "show_riwayat":
-                    print(riwayat)
                 elif command == "help":
                     function.help(role)
                 elif command == "save":
