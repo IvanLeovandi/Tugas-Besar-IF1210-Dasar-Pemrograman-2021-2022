@@ -7,10 +7,10 @@ def register_user(user):
     # F.S. matriks data user ditambahkan data user baru
     
     # KAMUS LOKAL
-    # nama, username, password: string
-    # valid : boolean
-    # i: integer
-    # register, user : array of array of string
+    # nama, username, password = string
+    # valid = boolean
+    # i = integer
+    # register, user = array of array of string
     
     # ALGORITMA
     # input nama, username, password
@@ -45,7 +45,15 @@ def register_user(user):
     return user
 
 # F03 - Login
-def login (user): 
+def login (user):
+    # fungsi yang digunakan pengguna untuk masuk ke dalam sistem
+
+    # KAMUS LOKAL
+    # username, pw, user_id, role, saldo = data_user
+    # status = boolean
+    # i = integer
+
+    # ALGORITMA
     username = input("Masukkan username: ")
     pw = input('Masukkan passsword: ')
     status=False
@@ -71,9 +79,9 @@ def add_game(game):
     # F.S. matriks data game ditambahkan data game baru
     
     # KAMUS LOKAL
-    # nama_game, kategori, tahun_rilis, harga_game, stok_awal: string
-    # valid : boolean
-    # add_game, game : array of array of string
+    # nama_game, kategori, tahun_rilis, harga_game, stok_awal = string
+    # valid = boolean
+    # add_game, game = array of array of string
 
     # Algoritma
     # Menerima input informasi tentang game yang ingin ditambahkan
@@ -121,8 +129,14 @@ def add_game(game):
         return game
 
 # F05 - Mengubah Game
-# Asumsi data game tidak kosong
 def ubah_game (game):
+    # prosedur untuk mengganti informasi game pada toko
+
+    # KAMUS LOKAL
+    # id_game, nama_game, kategori, tahun_rilis, harga_game = data_game
+    # index, index2, i, j = integer
+
+    # ALGORITMA
     id_game=input('Masukkan ID game: ')
     index=0
     index2=0
@@ -147,9 +161,8 @@ def ubah_game (game):
             j+=1
 
 # F06 - Mengubah stok
-# Asumsi data game tidak kosong
 def update_stok(role,game):
-    # fungsi yang digunakan untuk mengubah stok game pada toko
+    # prosedur+ yang digunakan untuk mengubah stok game pada toko
     
     # KAMUS LOKAL
     # id_game = str
@@ -187,12 +200,14 @@ def update_stok(role,game):
 
 # F07 - List Game toko
 def list_game_toko(game):
+    # prosedur untuk mengurutkan game berdasarkan masukan skema yang diinginkan
+
     # KAMUS LOKAL
+    # list_game = array of (array of string)
+    # skema = string
+    # temp = string
 
-    # list_game : array of (array of string)
-    # skema : string
-    # temp : string
-
+    # ALGORITMA
     def max (array, skema, x):
         if skema == "tahun-":
             hasil = list_game[x][3]
@@ -244,7 +259,7 @@ def list_game_toko(game):
                         list_game[j] = list_game[i]
                         list_game[i] = temp
             
-
+            # menampilkan output
             arr_length_max = support.max_length(list_game)
             for i in range(support.f_len(list_game)):
                 if (i < 9):
@@ -268,7 +283,7 @@ def list_game_toko(game):
                         temp = list_game[j]
                         list_game[j] = list_game[i]
                         list_game[i] = temp
-            
+            # menampilkan output
             arr_length_max = support.max_length(list_game)
             for i in range(support.f_len(list_game)):
                 if (i < 9):
@@ -292,7 +307,7 @@ def list_game_toko(game):
                         temp = list_game[j]
                         list_game[j] = list_game[i]
                         list_game[i] = temp
-
+            # menampilkan output
             arr_length_max = support.max_length(list_game)
             for i in range(support.f_len(list_game)):
                 if (i < 9):
@@ -316,7 +331,7 @@ def list_game_toko(game):
                         temp = list_game[j]
                         list_game[j] = list_game[i]
                         list_game[i] = temp
-
+            # menampilkan output
             arr_length_max = support.max_length(list_game)
             for i in range(support.f_len(list_game)):
                 if (i < 9):
@@ -339,7 +354,7 @@ def list_game_toko(game):
                         temp = list_game[j]
                         list_game[j] = list_game[i]
                         list_game[i] = temp
-
+            # menampilkan output
             arr_length_max = support.max_length(list_game)
             for i in range(support.f_len(list_game)):
                 if (i < 9):
@@ -424,6 +439,14 @@ def buy_game (role, user_id, saldo, game, kepemilikan, temp_history):
 
 # F09 - Melihat Game yang dimiliki
 def list_game(role,user_id,kepemilikan,game):
+    # prosedur yang digunakan untuk melihat game yang dimiliki oleh User
+    
+    # KAMUS LOKAL
+    # i, j, max_length, length_data, arr_length_max = integer
+    # line = array of data_kepemilikan
+    # owned_game_id, my_game = array of data_game
+
+    # ALGORITMA
     if role == "User":
         owned_game_id = []
         my_game = []
@@ -440,6 +463,7 @@ def list_game(role,user_id,kepemilikan,game):
                     if line[0] == owned_game_id[i]:
                         my_game = support.f_append(my_game,[line[0],line[1],line[2],line[3],line[4]]) # menyimpan data game yang dimiliki pada variabel my_game
             
+            # menampilkan output
             arr_length_max = support.max_length(my_game)
             print("Daftar game:")
             for i in range(support.f_len(my_game)):
@@ -463,7 +487,7 @@ def list_game(role,user_id,kepemilikan,game):
 
 # F10 - Mencari Game yang dimiliki dari ID dan tahun rilis
 def search_my_game(role,user_id,kepemilikan,game):
-    # fungsi yang digunakan user untuk mencari game yang dimiliki berdasarkan ID game dan tahun rilis
+    # prosedur yang digunakan user untuk mencari game yang dimiliki berdasarkan ID game dan tahun rilis
     
     # KAMUS LOKAL
     # type data_my_game = <game_id:string, nama:string, harga:string, kategori:string, tahun rilis:string>
@@ -473,6 +497,7 @@ def search_my_game(role,user_id,kepemilikan,game):
     # owned_game_id = array of string
     # my_game = array of data_my_game
 
+    # ALGORITMA
     if role == "User":
         game_id = input("Masukkan ID Game: ")
         tahun_rilis = input("Masukkan Tahun Rilis Game: ")
@@ -526,7 +551,7 @@ def search_my_game(role,user_id,kepemilikan,game):
             if count == 0:
                 print("Tidak ada game pada inventory-mu yang memenuhi kriteria")
             else:
-                
+                # menampilkan output
                 arr_length_max = support.max_length(my_game)
                 for i in range(support.f_len(my_game)):
                     if (i < 9):
@@ -550,15 +575,17 @@ def search_my_game(role,user_id,kepemilikan,game):
 
 # F11 - Mencari Game di toko
 def search_game_at_store(game):
+    # prosedur untuk mencari game pada toko berdasarkan kategori pencarian
+    
     # KAMUS LOKAL
-    # inventory : array of (array of string)
-    # game_valid : array of (array of string)
-    # game_id : string
-    # game_title : string
-    # game_price : string
-    # game_category : string
-    # game_year : string
-    # count = integer
+    # inventory = array of (array of string)
+    # game_valid = array of (array of string)
+    # game_id = string
+    # game_title = string
+    # game_price = string
+    # game_category = string
+    # game_year = string
+    # count, i = integer
 
     # ALGORITMA
     inventory = game
@@ -810,7 +837,7 @@ def search_game_at_store(game):
                                             if inventory[i][2] == game_category:
                                                 if inventory[i][3] == game_year:
                                                     game_valid = support.f_append(game_valid,inventory[i])
-    
+    # menampilkan output
     if support.f_len(game_valid) != 0:
         print("Daftar game pada toko yang memenuhi kriteria: ")
         arr_length_max = support.max_length(game_valid)
@@ -833,16 +860,16 @@ def search_game_at_store(game):
 def topup(user):
     # Menambahkan data saldo pada user tertentu
     # I.S. matriks data user terdefinisi
-    # F.S. 
+    # F.S. perubahan informasi saldo pada data user
     
     # KAMUS LOKAL
-    # username : string
-    # saldo_tambahan : integer
-    # found : Boolean
-    # user : array of array of string and integer
-    # i : integer
+    # username = string
+    # saldo_tambahan = integer
+    # found = Boolean
+    # user = array of array of string and integer
+    # i = integer
 
-    # Algoritma
+    # ALGORITMA
     # Menerima input username dan saldo tambahan
     username = input("Masukkan username: ")
     saldo_tambahan = int(input("Masukkan saldo: "))
@@ -873,6 +900,14 @@ def topup(user):
 
 # F13 - Melihat riwayat pembelian
 def riwayat_pembelian(riwayatgame,user,username):
+    # prosedur yang digunakan user untuk melihat riwayat pembelian game
+    
+    # KAMUS LOKAL
+    # index, index2, arr_length_max, max_length, length_data: integer
+    # condition: boolean
+    # show_riwayat: array of data_history
+
+    # ALGORITMA
     show_riwayat=[]
     index=0
     index2=0
@@ -887,6 +922,7 @@ def riwayat_pembelian(riwayatgame,user,username):
             condition=True
             show_riwayat = support.f_append(show_riwayat,[riwayatgame[i][0],riwayatgame[i][1],riwayatgame[i][2],riwayatgame[i][4]])
 
+    # menampilkan output
     if condition==False:
         print('Maaf, kamu tidak ada riwayat pembelian game. Ketik perintah buy_game untuk membeli.')
     else:
@@ -910,6 +946,10 @@ def riwayat_pembelian(riwayatgame,user,username):
 # F14 - Help
 def help(curr_role):
     # Fungsi menampilkan perintah-perintah yang dapat digunakan pada aplikasi jika belum login/belum ada role tertentu
+    
+    # KAMUS LOKAL
+
+    # ALGORITMA
     if curr_role == "":
         print("""
         ============ HELP ============
@@ -965,6 +1005,16 @@ def help(curr_role):
 
 # F15 - Load
 def load (loaded):
+    # fungsi yang digunakan untuk memuat file pada database
+    
+    # KAMUS LOKAL
+    # game = array of data_game
+    # user = array of data_user
+    # riwayat = array of history
+    # kepemilikan = array of data_kepemilikan
+    # loaded = bool
+
+    # ALGORITMA
     print('Loading...')
     time.sleep(2)
     if len(sys.argv)!=1:
@@ -990,6 +1040,24 @@ def load (loaded):
 
 # F16 - Save
 def save(user,game,riwayat,kepemilikan):
+    # prosedur yang digunakan untuk menyimpan perubahan
+
+    # KAMUS LOKAL
+    # g : SEQFILE of 
+    #     (*)data_game
+    #     (1)"" 
+    # u : SEQFILE of 
+    #     (*)data_user
+    #     (1)""
+    # r : SEQFILE of 
+    #     (*)data_riwayat
+    #     (1)""
+    # k : SEQFILE of 
+    #     (*)data_kepemilikan
+    #     (1)""
+    # current_path, path : string
+
+    # ALGORITMA
     current_path = os.getcwd()
     path = input('Masukkan nama folder penyimpanan: ')
     if not os.path.exists(path):
@@ -1050,6 +1118,8 @@ def exit_program(user, game, riwayat, kepemilikan):
     # KAMUS LOKAL
     # answer = str
     # save(path:string, user:array of data_user, game:array of data_game, riwayat:array of data_history, kepemilikan: array of data_kepemilikan)
+    
+    # ALGORITMA
     answer = input("Apakah Anda mau melakukan penyimpanan file yang sudah diubah? (y/n) ")
     while (answer != "y" and answer != "Y" and answer != "n" and answer != "N"):
         answer = input("Apakah Anda mau melakukan penyimpanan file yang sudah diubah? (y/n) ")
