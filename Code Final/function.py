@@ -773,10 +773,10 @@ def search_game_at_store(game):
                 if game_price == "":
                     if game_category == "":
                         if game_year == "":
-                            #Parameter ID dan Tahun tidak kosong
+                            #Parameter ID dan Nama tidak kosong
                             for i in range(support.f_len(inventory)):
                                 if game_id == inventory[i][0]:
-                                    if inventory[i][3] == game_year:
+                                    if inventory[i][1] == game_title:
                                         game_valid = support.f_append(game_valid,inventory[i])
                         else:
                             for i in range (support.f_len(inventory)):
