@@ -1,6 +1,6 @@
 def ubah_game (datagame):
     id_game=input('Masukkan ID game: ')
-    index=0
+    index=-1
     index2=0
     for i in (datagame):
         if id_game==i[0]:
@@ -10,7 +10,7 @@ def ubah_game (datagame):
     kategori=input('Masukkan kategori: ')
     tahun_rilis=input('Masukkan tahun rilis: ')
     harga_game=input('Masukkan harga: ')
-    if index==0 : 
+    if index==-1 : 
         print('Maaf game tidak ditemukan')
     else : 
         j=1
